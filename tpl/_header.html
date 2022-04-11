@@ -1,0 +1,20 @@
+<div class="x_page-header">
+	<h1>
+		{$lang->consumer_relation_management} 
+		<a href="#aboutModule" data-toggle class="x_icon-question-sign">{$lang->help}</a>
+	</h1>
+</div>
+<p class="x_alert x_alert-info" id="aboutModule" hidden>{$lang->about_svcrm}</p>
+<ul class="x_nav x_nav-tabs" cond="$module_info">
+	<li class="x_active"|cond="$act=='dispSvcrmAdminCustomerList'"><a href="{getUrl('act','dispSvcrmAdminCustomerList')}">{$lang->cmd_customer_management}</a></li>
+	<li class="x_active"|cond="$act=='dispSvcrmAdminRegistrationMgmt'"><a href="{getUrl('act','dispSvcrmAdminRegistrationMgmt')}">{$lang->cmd_registration_mgmt}</a></li>
+	<li class="x_active"|cond="$act=='dispSvcrmAdminOrderInformMgmt'"><a href="{getUrl('act','dispSvcrmAdminOrderInformMgmt')}">{$lang->cmd_order_inform_mgmt}</a></li>
+	<li class="x_active"|cond="$act=='dispSvcrmAdminInquiryInformMgmt'"><a href="{getUrl('act','dispSvcrmAdminInquiryInformMgmt')}">{$lang->cmd_inquiry_inform_mgmt}</a></li>
+	<li class="x_active"|cond="$act=='dispSvcrmAdminGuestSms'"><a href="{getUrl('act','dispSvcrmAdminGuestSms')}">{$lang->cmd_guest_sms}</a></li>
+	<li class="x_active"|cond="$act=='dispSvcrmAdminGmailConfig'"><a href="{getUrl('act','dispSvcrmAdminGmailConfig')}">{$lang->cmd_gmail_config}</a></li>
+	<li class="x_active"|cond="$act=='dispSvcrmAdminModInstList'" ><a href="{getUrl('','module',$module,'act','dispSvcrmAdminModInstList')}">{$lang->page_list}</a></li>
+	<li class="x_active"|cond="$act=='dispSvcrmAdminConfig'"><a href="{getUrl('act','dispSvcrmAdminConfig')}">{$lang->cmd_basic_setting}</a></li>
+<block cond="$privacy_access_configure">
+	<li class="x_active"|cond="$act=='dispSvcrmAdminPrivacyAccessConfig'"><a href="{getUrl('act','dispSvcrmAdminPrivacyAccessConfig')}">{$lang->cmd_privacy_access_setting}</a></li>
+</block>
+</ul>

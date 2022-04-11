@@ -1,0 +1,13 @@
+<query id="insertCommLog" action="insert">
+	<tables>
+		<table name="svcrm_communication_history" />
+	</tables>
+	<columns>
+		<column name="sender_member_srl" var="sender_member_srl" notnull="notnull" />
+		<column name="recepient_member_srl" var="recepient_member_srl" notnull="notnull" />
+		<column name="medium_type" var="medium_type" default="0" />
+		<column name="recipient_no" var="recipient_no" notnull="notnull" />
+		<column name="content" var="content" notnull="notnull" />
+		<column name="regdate" var="regdate" default="curdate()" />
+	</columns>
+</query>

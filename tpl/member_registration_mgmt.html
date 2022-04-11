@@ -1,0 +1,84 @@
+<include target="_header.html" />
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+<form action="./" method="post" class="x_form-horizontal">
+<input name="act" type="hidden" value="procSvcrmAdminUpdateRegistrationMgmt" />
+<input name="module" type="hidden" value="{$module}" />
+<section class="section">
+	<h1>
+		{$lang->title_member_registration_mgmt}
+		<a href="#aboutRegistrationMgmt" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+	</h1>
+	<p id="aboutRegistrationMgmt" class="x_alert x_alert-info-block" hidden>{$lang->about_member_registration_mgmt}</p>
+	<div class="x_control-group">
+		<label class="x_control-label" for="welcome_coupon_yn">{$lang->welcome_coupon_yn}</label>
+		<div class="x_controls" >
+			<label class="x_inline" for="sms_welcome_msg_yn">
+				<input type="radio" name="welcome_coupon_yn" id="welcome_coupon_yn" value="off" checked="checked"|cond="$config->welcome_coupon_yn=='' || $config->welcome_coupon_yn=='off'" />
+				{$lang->cmd_sms_off}
+				<input type="radio" name="welcome_coupon_yn" id="welcome_coupon_yn" value="on" checked="checked"|cond="$config->welcome_coupon_yn=='on'" />
+				{$lang->cmd_sms_on}
+			</label>
+			<a href="#welcome_coupon_yn_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="welcome_coupon_yn_help" class="x_help-block" hidden>{$lang->about_welcome_coupon_yn}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="coupon_promotion_title">{$lang->coupon_promotion_title}</label>
+		<div class="x_controls">
+			<select name="registration_coupon_promotion_srl">
+				<option value="0" selected="selected"|cond="$config->registration_coupon_promotion_srl==0">{$lang->registration_coupon_promotion_off}</option>
+				<option loop="$coupon_promotion_list=>$key,$val" value="{$val->promotion_srl}" selected="selected"|cond="$config->registration_coupon_promotion_srl==$val->promotion_srl">{$val->promotion_title}</option>
+			</select>
+			<a href="#coupon_promotion_title_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="coupon_promotion_title_help" class="x_help-block" hidden>{$lang->about_coupon_promotion_title}</p>
+		</div>
+	</div>
+	<div class="x_control-group" loop="$member_joinfrom_list=>$key,$val">
+		<label class="x_control-label" for="member_term_{$key}">가입약관-{$val->column_title}</label>
+		<div class="x_controls" >
+			<label class="x_inline" for="{$val->column_name}">
+				<input type="radio" name="{$val->column_name}" id="{$val->column_name}" value="ignore_this_value" checked="checked"|cond="$val->current_opt=='ignore_this_value'" />
+				{$lang->cmd_ignore_response}
+<block loop="$val->default_value=>$key1,$val1">
+				<input type="radio" name="{$val->column_name}" id="{$val->column_name}" value="{$val1}" checked="checked"|cond="$val->current_opt==$val1" />
+				{$val1}
+</block>
+			</label>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="sms_welcome_yn">{$lang->sms_welcome_msg_yn}</label>
+		<div class="x_controls" >
+			<label class="x_inline" for="sms_welcome_msg_yn">
+				<input type="radio" name="sms_welcome_msg_yn" id="sms_welcome_msg_yn" value="off" checked="checked"|cond="$config->sms_welcome_msg_activate=='' || $config->sms_welcome_msg_activate=='off'" />
+				{$lang->cmd_sms_off}
+				<input type="radio" name="sms_welcome_msg_yn" id="sms_welcome_msg_yn" value="on" checked="checked"|cond="$config->sms_welcome_msg_activate=='on'" />
+				{$lang->cmd_sms_on}
+			</label>
+			<a href="#sms_welcome_msg_yn_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="sms_welcome_msg_yn_help" class="x_help-block" hidden>{$lang->about_sms_welcome_msg_yn}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="sms_welcome_msg_default">{$lang->sms_welcome_msg_default}</label>
+		<div class="x_controls">
+			<textarea name="sms_welcome_msg_default">{$config->sms_welcome_msg_default}</textarea>
+			<a href="#sms_welcome_msg_default_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="sms_welcome_msg_default_help" class="x_help-block" hidden>{$lang->about_sms_welcome_msg_default}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="sms_welcome_msg_with_coupon">{$lang->sms_welcome_msg_with_coupon}</label>
+		<div class="x_controls">
+			<textarea name="sms_welcome_msg_with_coupon">{$config->sms_welcome_msg_with_coupon}</textarea>
+			<a href="#sms_welcome_msg_with_coupon_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="sms_welcome_msg_with_coupon_help" class="x_help-block" hidden>{$lang->about_sms_welcome_msg_with_coupon}</p>
+		</div>
+	</div>
+</section>
+<div class="x_clearfix btnArea">
+	<button type="submit" class="x_btn x_btn-primary">{$lang->cmd_submit}</button>
+</div>
+</form>

@@ -1,0 +1,32 @@
+<include target="_header.html" />
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+<form action="./" method="post" class="x_form-horizontal">
+<input name="act" type="hidden" value="procSvcrmAdminUpdatePrivacyAccess" />
+<input name="module" type="hidden" value="{$module}" />
+<section class="section">
+	<h1>
+		{$lang->title_privacy_acceess_level_mgmt}
+		<a href="#aboutInquiryInformMgmt" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+	</h1>
+	<p id="aboutInquiryInformMgmt" class="x_alert x_alert-info-block" hidden>{$lang->about_privacy_acceess_level_mgmt}</p>
+<block loop="$admin_list=>$key,$val">
+	<div class="x_control-group">
+		<label class="x_control-label" for="inquiry_inform_title">{$val->user_name}</label>
+		<div class="x_controls">
+			<label class="x_inline" for="autdate_access"><input type="checkbox" name="autdate_access[]" id="autdate_access[]" value="{$val->member_srl}" checked="checked"|cond="$config[$val->member_srl][auth_date]=='Y'" /> auth_date</label>
+			<label class="x_inline" for="username_access"><input type="checkbox" name="username_access[]" id="username_access[]" value="{$val->member_srl}" checked="checked"|cond="$config[$val->member_srl][user_name]=='Y'" /> user_name</label>
+			<label class="x_inline" for="birthday_access"><input type="checkbox" name="birthday_access[]" id="birthday_access[]" value="{$val->member_srl}" checked="checked"|cond="$config[$val->member_srl][birthday]=='Y'" /> birthday</label>
+			<label class="x_inline" for="gender_access"><input type="checkbox" name="gender_access[]" id="gender_access[]" value="{$val->member_srl}" checked="checked"|cond="$config[$val->member_srl][gender]=='Y'" /> gender</label>
+			<label class="x_inline" for="nationality_access"><input type="checkbox" name="nationality_access[]" id="nationality_access[]" value="{$val->member_srl}" checked="checked"|cond="$config[$val->member_srl][nationality]=='Y'" /> nationality</label>
+			<label class="x_inline" for="mobile_access"><input type="checkbox" name="mobile_access[]" id="mobile_access[]" value="{$val->member_srl}" checked="checked"|cond="$config[$val->member_srl][mobile]=='Y'" /> mobile</label>
+			<label class="x_inline" for="isp_access"><input type="checkbox" name="isp_access[]" id="isp_access[]" value="{$val->member_srl}" checked="checked"|cond="$config[$val->member_srl][ISP]=='Y'" /> ISP</label>
+		</div>
+	</div>
+</block>
+</section>
+<div class="x_clearfix btnArea">
+	<button type="submit" class="x_btn x_btn-primary">{$lang->cmd_submit}</button>
+</div>
+</form>

@@ -1,0 +1,15 @@
+<query id="insertEngageLog" action="insert">
+	<tables>
+		<table name="svcrm_engage_log" />
+	</tables>
+	<columns>
+		<column name="session_key" var="sSssionKey" />
+		<column name="member_srl" var="nMemberSrl" default="0"/>
+		<column name="document_srl" var="nDocSrl" />
+		<column name="comment_srl" var="nCommentSrl" default="0"/>
+		<column name="elapsed_sec_last_intreact" var="nElapsedSecLastIntreact" />
+		<column name="val" var="sVal" />
+		<column name="cur_mid" var="sCurMid" />
+		<column name="regdate" var="regdate" default="curdate()" />
+	</columns>
+</query>

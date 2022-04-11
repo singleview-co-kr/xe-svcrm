@@ -1,0 +1,11 @@
+<query id="getAuthMemberList" action="select">
+    <tables>
+        <table name="member" />
+    </tables>
+    <columns>
+        <column name="member_srl" />
+		<column name="user_id" />
+		<column name="email_address" />
+		<column name="extra_vars" />
+    </columns>
+</query>

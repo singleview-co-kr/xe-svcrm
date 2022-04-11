@@ -1,0 +1,22 @@
+<query id="insertCsLog" action="insert">
+	<tables>
+		<table name="svcrm_cs_log" />
+	</tables>
+	<columns>
+		<column name="is_allowed" var="is_allowed" default="0"/>
+		<column name="order_srl" var="order_srl" notnull="notnull" />
+		<column name="cart_srl" var="cart_srl" />
+		<column name="item_srl" var="item_srl" />
+		<column name="order_status_source" var="order_status_source" notnull="notnull" />
+		<column name="order_status_dest" var="order_status_dest" notnull="notnull" />
+		<column name="buyer_member_srl" var="buyer_member_srl" notnull="notnull" />
+		<column name="admin_member_srl" var="admin_member_srl" notnull="notnull" />
+		<column name="related_claim_code" var="related_claim_code" />
+		<column name="amount" var="amount" />
+		<column name="amount_type" var="amount_type" />
+		<column name="memo" var="memo" />
+		<column name="caller_info" var="caller_info" notnull="notnull" />
+		<column name="duedate" var="duedate" />
+		<column name="regdate" var="regdate" default="curdate()" />
+	</columns>
+</query>

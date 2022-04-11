@@ -1,0 +1,56 @@
+<include target="_header.html" />
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+<section class="section">
+<form action="./" method="post" class="x_form-horizontal">
+<input name="act" type="hidden" value="procSvcrmAdminSendSmsToGuest" />
+<input name="module" type="hidden" value="{$module}" />
+	<h2>{$lang->title_sms_history}</h2>
+	<div class="x_control-group">
+		<label class="x_control-label" for="guest_phone_number">{$lang->guest_phone_number}</label>
+		<div class="x_controls" >
+			<input type="text" name="guest_phone_number" id="guest_phone_number" />
+			<a href="#guest_phone_number_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="guest_phone_number_help" class="x_help-block" hidden>{$lang->about_guest_phone_number}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="sms_contents">{$lang->contents}</label>
+		<div class="x_controls" >
+			<textarea name="something_to_say"></textarea>
+			<a href="#sms_contents_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="sms_contents_help" class="x_help-block" hidden>{$lang->about_sms_contents}</p>
+		</div>
+	</div>
+	<div class="x_clearfix btnArea">
+		<button type="submit" class="x_btn x_btn-primary">{$lang->cmd_send_sms}</button>
+	</div>
+</form>
+<form action="" method="post">
+	<table id="memberList" class="x_table x_table-striped x_table-hover">
+		<thead>
+			<tr>
+				<th scope="col" class="nowr">{$lang->medium_type}</th>
+				<th scope="col" class="nowr">{$lang->sender}</th>
+				<th scope="col" class="nowr">{$lang->recipient_no}</th>
+				<th scope="col" width='500px' nowrap>{$lang->contents}</th>
+				<th scope="col" class="nowr">{$lang->date}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr loop="$comm_log=>$no,$log_info">
+				<td class="nowr">{$log_info->medium_type}</td>
+				<td class="nowr">{$log_info->sender_id}</td>
+				<td class="nowr">{$log_info->recipient_no}</td>
+				<td >{$log_info->content}</td>
+				<td class="nowr">{zdate($log_info->regdate)}</td>
+			</tr>
+			<tr cond="$total_count==0">
+				<td>{$lang->msg_no_result}</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+</section>
+게시글 내역

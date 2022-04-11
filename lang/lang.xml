@@ -1,0 +1,256 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+	<item name="consumer_relation_management">
+		<value xml:lang="ko"><![CDATA[싱글뷰 CRM]]></value>
+		<value xml:lang="en"><![CDATA[Singleview Mobile Auth module]]></value>
+	</item>
+	<item name="registration_coupon_promotion_off">
+		<value xml:lang="ko"><![CDATA[회원가입 쿠폰 프로모션 OFF]]></value>
+	</item>
+	<item name="welcome_coupon_yn">
+		<value xml:lang="ko"><![CDATA[회원 가입 환영 쿠폰 사용여부]]></value>
+	</item>
+	<item name="about_welcome_coupon_yn">
+		<value xml:lang="ko"><![CDATA[신규 회원 가입 시 환영 쿠폰 발행 기능 사용 여부를 선택합니다.]]></value>
+	</item>
+	<item name="sms_welcome_msg_yn">
+		<value xml:lang="ko"><![CDATA[환영 SMS 사용여부]]></value>
+	</item>
+	<item name="sms_welcome_msg_default">
+		<value xml:lang="ko"><![CDATA[기본 환영 SMS]]></value>
+	</item>
+	<item name="sms_welcome_msg_with_coupon">
+		<value xml:lang="ko"><![CDATA[할인 쿠폰 SMS]]></value>
+	</item>
+	<item name="sms_order_status_wait_for_deposit">
+		<value xml:lang="ko"><![CDATA[입금대기 알림]]></value>
+	</item>
+	<item name="sms_order_status_deposit_confirmed">
+		<value xml:lang="ko"><![CDATA[입금완료 알림]]></value>
+	</item>
+	<item name="sms_order_status_delivery_preparation">
+		<value xml:lang="ko"><![CDATA[배송준비 알림]]></value>
+	</item>
+	<item name="sms_order_status_on_delivery">
+		<value xml:lang="ko"><![CDATA[배송중 알림]]></value>
+	</item>
+	<item name="sms_order_status_cancel_request">
+		<value xml:lang="ko"><![CDATA[주문취소요청 알림]]></value>
+	</item>
+	<item name="sms_order_status_cancel_completed">
+		<value xml:lang="ko"><![CDATA[주문취소완료 알림]]></value>
+	</item>
+	<item name="sms_to_send_now">
+		<value xml:lang="ko"><![CDATA[지금 전송]]></value>
+	</item>
+	<item name="guest_phone_number">
+		<value xml:lang="ko"><![CDATA[비회원 핸드폰 번호]]></value>
+	</item>
+	<item name="medium_type">
+		<value xml:lang="ko"><![CDATA[매체]]></value>
+	</item>
+	<item name="contents">
+		<value xml:lang="ko"><![CDATA[내용]]></value>
+	</item>
+	<item name="member_auth">
+		<value xml:lang="ko"><![CDATA[인증]]></value>
+	</item>
+	<item name="gmail_activation">
+		<value xml:lang="ko"><![CDATA[지메일 사용 여부]]></value>
+	</item>
+	<item name="title_inquiry_inform_mgmt">
+		<value xml:lang="ko"><![CDATA[글등록 알림 관리]]></value>
+	</item>
+	<item name="set_inquiry_inform_title">
+		<value xml:lang="ko"><![CDATA[감시 게시판 설정]]></value>
+	</item>
+	<item name="title_crm_slack_web_hook_url">
+		<value xml:lang="ko"><![CDATA[Slack WebHookUrl]]></value>
+	</item>
+	<item name="about_crm_slack_web_hook_url">
+		<value xml:lang="ko"><![CDATA[프로젝트에서 Incoming WebHooks 앱을 추가 후 발급받은 Webhook URL 전체 입력]]></value>
+	</item>
+	<item name="title_crm_slack_ch">
+		<value xml:lang="ko"><![CDATA[Slack 채널]]></value>
+	</item>
+	<item name="about_crm_slack_ch">
+		<value xml:lang="ko"><![CDATA[내용 전송할 Slack 메신저 채널명, #을 제외합니다.]]></value>
+	</item>
+	<item name="title_crm_slack_username">
+		<value xml:lang="ko"><![CDATA[Slack 봇 이름]]></value>
+	</item>
+	<item name="about_crm_slack_username">
+		<value xml:lang="ko"><![CDATA[내용 전송할 Slack 메신저 봇의 이름을 입력합니다.]]></value>
+	</item>
+	<item name="title_crm_responsible_number">
+		<value xml:lang="ko"><![CDATA[CRM 관리자 핸드폰 번호]]></value>
+	</item>
+	<item name="title_privacy_acceess_level_mgmt">
+		<value xml:lang="ko"><![CDATA[실명인증 열람권한 설정]]></value>
+	</item>
+	<item name="title_except_grp_mgmt">
+		<value xml:lang="ko"><![CDATA[알림예외 그룹 설정]]></value>
+	</item>
+	<item name="about_privacy_acceess_level_mgmt">
+		<value xml:lang="ko"><![CDATA[개별 관리자의 실명인증 열람권한을 설정합니다.]]></value>
+	</item>
+	<item name="about_except_member_group">
+		<value xml:lang="ko"><![CDATA[지정한 그룹에 속한 회원이 작성하면 통보하지 않습니다.]]></value>
+	</item>
+	<item name="about_crm_responsible_number">
+		<value xml:lang="ko"><![CDATA[여러 명이면 ;로 구분합니다. -는 입력하지 않습니다.]]></value>
+	</item>
+	<item name="about_gmail_activation_help">
+		<value xml:lang="ko"><![CDATA[발신전용 Gmail 사용 여부를 선택합니다.]]></value>
+	</item>
+	<item name="gmail_common_footer">
+		<value xml:lang="ko"><![CDATA[Gmail 공통 푸터]]></value>
+	</item>
+	<item name="about_gmail_common_footer">
+		<value xml:lang="ko"><![CDATA[발신전용 Gmail의 본문의 마지막에 항상 포함되는 푸터입니다.]]></value>
+	</item>
+	<item name="about_gmail_sender_name_help">
+		<value xml:lang="ko"><![CDATA[발신전용 Gmail 보내는 이 명칭을 입력합니다.]]></value>
+	</item>
+	<item name="page_list">
+		<value xml:lang="ko"><![CDATA[페이지 목록]]></value>
+	</item>
+	<item name="gmail_account">
+		<value xml:lang="ko"><![CDATA[Gmail 계정]]></value>
+	</item>
+	<item name="gmail_sender_name">
+		<value xml:lang="ko"><![CDATA[Gmail 발신인명]]></value>
+	</item>
+	<item name="gmail_passwd">
+		<value xml:lang="ko"><![CDATA[Gmail 암호]]></value>
+	</item>
+	<item name="about_gmail_passwd_help">
+		<value xml:lang="ko"><![CDATA[Gmail 암호를 입력합니다. 비번 발급 방법은 https://support.google.com/mail/?p=InvalidSecondFactor 를 참고하세요.]]></value>
+	</item>
+	<item name="about_gmail_account_help">
+		<value xml:lang="ko"><![CDATA[Gmail 계정을 입력합니다.]]></value>
+	</item>
+	<item name="cmd_send_test">
+		<value xml:lang="ko"><![CDATA[Gmail 테스트 발송]]></value>
+	</item>
+	<item name="cmd_consumer_inquiry">
+		<value xml:lang="ko"><![CDATA[고객 조회]]></value>
+	</item>
+	<item name="cmd_customer_management">
+		<value xml:lang="ko"><![CDATA[실명인증 CRM 관리]]></value>
+	</item>
+	<item name="cmd_guest_sms">
+		<value xml:lang="ko"><![CDATA[비회원 SMS 관리]]></value>
+	</item>
+	<item name="cmd_gmail_config">
+		<value xml:lang="ko"><![CDATA[Gmail 설정 관리]]></value>
+	</item>
+	<item name="cmd_basic_setting">
+		<value xml:lang="ko"><![CDATA[기본설정]]></value>
+	</item>
+	<item name="cmd_order_inform_mgmt">
+		<value xml:lang="ko"><![CDATA[주문처리안내 설정]]></value>
+	</item>
+	<item name="cmd_inquiry_inform_mgmt">
+		<value xml:lang="ko"><![CDATA[문의글 등록 알림 설정]]></value>
+	</item>
+	<item name="cmd_privacy_access_setting">
+		<value xml:lang="ko"><![CDATA[개인정보 열람권한 설정]]></value>
+	</item>
+	<item name="cmd_ignore_response">
+		<value xml:lang="ko"><![CDATA[입력값 무시]]></value>
+	</item>
+	<item name="cmd_sms_on">
+		<value xml:lang="ko"><![CDATA[ON]]></value>
+	</item>
+	<item name="cmd_sms_off">
+		<value xml:lang="ko"><![CDATA[OFF]]></value>
+	</item>
+	<item name="cmd_send_sms">
+		<value xml:lang="ko"><![CDATA[SMS보내기]]></value>
+	</item>
+	<item name="cmd_download_auth_member_list">
+		<value xml:lang="ko"><![CDATA[실명인증 회원 목록 CSV 다운로드]]></value>
+	</item>
+	<item name="cmd_registration_mgmt">
+		<value xml:lang="ko"><![CDATA[회원가입 관리]]></value>
+	</item>
+	<item name="title_gmail_mgmt">
+		<value xml:lang="ko"><![CDATA[발신전용 지메일 관리]]></value>
+	</item>
+	<item name="title_member_registration_mgmt">
+		<value xml:lang="ko"><![CDATA[회원가입 혜택 정책 관리]]></value>
+	</item>
+	<item name="title_order_status_update_inform_mgmt">
+		<value xml:lang="ko"><![CDATA[주문상태 변경 알림 정책 관리]]></value>
+	</item>
+	<item name="title_sms_history">
+		<value xml:lang="ko"><![CDATA[문자 발송 내역]]></value>
+	</item>
+	<item name="about_gmail_mgmt">
+		<value xml:lang="ko"><![CDATA[상점 관리자의 발신전용 Gmail 계정을 관리합니다.]]></value>
+	</item>
+	<item name="about_inquiry_inform_mgmt">
+		<value xml:lang="ko"><![CDATA[체크한 게시판에 글이 등록되면 CRM 관리자에게 SMS로 통보됩니다.]]></value>
+	</item>
+	<item name="about_sender_no">
+		<value xml:lang="ko"><![CDATA[SMS알람 시 표시되는 발신자 번호입니다. -를 제외하고 입력하세요.]]></value>
+	</item>
+	<item name="about_guest_phone_number">
+		<value xml:lang="ko"><![CDATA[문자를 수신할 비회원의 핸드폰 번호를 입력합니다. SMS 수신 동의 여부를 꼭 확인하세요.]]></value>
+	</item>
+	<item name="about_svcrm">
+		<value xml:lang="ko"><![CDATA[고객 관계 관리에 필요한 다양한 기능을 제공합니다.]]></value>
+	</item>
+	<item name="about_sms_welcome_msg_yn">
+		<value xml:lang="ko"><![CDATA[회원 가입 시 환영SMS 작동 여부를 선택합니다. svpromotion과 textmessage모듈이 없으면 ON으로 설정할 수 없습니다.]]></value>
+	</item>
+	<item name="about_coupon_promotion_title">
+		<value xml:lang="ko"><![CDATA[회원 가입 시 아래의 조건으로 동의하면 적용할 쿠폰 프로모션 정책을 선택합니다.]]></value>
+	</item>
+	<item name="about_member_registration_mgmt">
+		<value xml:lang="ko"><![CDATA[회원 가입 시 아래의 조건으로 동의하면 회원이 기재한 핸드폰 번호로 SMS 쿠폰을 전송합니다.]]></value>
+	</item>
+	<item name="about_sms_welcome_msg_default">
+		<value xml:lang="ko"><![CDATA[회원 가입 시 조건을 만족하지 않으면 발송하는 환영 SMS 문장입니다. %i%:아이디, %un%:이름, %nn%:닉네임]]></value>
+	</item>
+	<item name="about_sms_welcome_msg_with_coupon">
+		<value xml:lang="ko"><![CDATA[회원 가입 시 조건을 만족하면 발송하는 환영 SMS 문장입니다. %i%:아이디, %un%:이름, %nn%:닉네임, %p%:프로모션제목, %c%:쿠폰번호]]></value>
+	</item>
+	<item name="about_order_status_update_inform_mgmt">
+		<value xml:lang="ko"><![CDATA[주문 상태 변경을 구매자에게 SMS 통지하는 기능입니다.]]></value>
+	</item>
+	<item name="about_sms_order_status_wait_for_deposit">
+		<value xml:lang="ko"><![CDATA[입금대기 상태를 구매자에게 SMS 통지하는 기능입니다. 메세지를 지우면 OFF입니다. %n%:구매자명, %oid%:주문번호]]></value>
+	</item>
+	<item name="about_sms_order_status_deposit_confirmed">
+		<value xml:lang="ko"><![CDATA[입금완료 상태를 구매자에게 SMS 통지하는 기능입니다. 메세지를 지우면 OFF입니다. %n%:구매자명, %oid%:주문번호]]></value>
+	</item>
+	<item name="about_sms_order_status_delivery_preparation">
+		<value xml:lang="ko"><![CDATA[배송준비 상태를 구매자에게 SMS 통지하는 기능입니다. 메세지를 지우면 OFF입니다. %n%:구매자명, %oid%:주문번호]]></value>
+	</item>
+	<item name="about_sms_order_status_on_delivery">
+		<value xml:lang="ko"><![CDATA[배송중 상태를 구매자에게 SMS 통지하는 기능입니다. 메세지를 지우면 OFF입니다. %n%:구매자명, %oid%:주문번호]]></value>
+	</item>
+	<item name="about_sms_order_status_cancel_request">
+		<value xml:lang="ko"><![CDATA[주문취소 상태를 구매자에게 SMS 통지하는 기능입니다. 메세지를 지우면 OFF입니다. %n%:구매자명, %oid%:주문번호]]></value>
+	</item>
+	<item name="about_sms_contents">
+		<value xml:lang="ko"><![CDATA[비회원에게 전송할 SMS 내용을 입력합니다.]]></value>
+	</item>
+	<item name="msg_error_svorder_not_exsited">
+		<value xml:lang="ko"><![CDATA[svorder 모듈을 먼저 설치해 주세요.]]></value>
+	</item>
+	<item name="msg_error_svpromotion_not_exsited">
+		<value xml:lang="ko"><![CDATA[svpromotion 모듈을 먼저 설치해 주세요.]]></value>
+	</item>
+	<item name="msg_error_svauth_not_exsited">
+		<value xml:lang="ko"><![CDATA[svauth 모듈을 먼저 설치해 주세요.]]></value>
+	</item>
+	<item name="msg_error_forbidden_slack_username">
+		<value xml:lang="ko"><![CDATA[금지된 slack 메신저 봇 이름입니다.]]></value>
+	</item>
+	<item name="msg_error_forbidden_nickname">
+		<value xml:lang="ko"><![CDATA[금지된 글쓴이 명칭입니다.]]></value>
+	</item>
+</lang>

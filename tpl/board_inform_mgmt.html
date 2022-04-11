@@ -1,0 +1,69 @@
+<include target="_header.html" />
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+<form action="./" method="post" class="x_form-horizontal">
+<input name="act" type="hidden" value="procSvcrmAdminUpdateInquiryInformMgmt" />
+<input name="module" type="hidden" value="{$module}" />
+<section class="section">
+	<h1>
+		{$lang->title_inquiry_inform_mgmt}
+		<a href="#aboutInquiryInformMgmt" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+	</h1>
+	<p id="aboutInquiryInformMgmt" class="x_alert x_alert-info-block" hidden>{$lang->about_inquiry_inform_mgmt}</p>
+	<div class="x_control-group">
+		<label class="x_control-label" for="inquiry_inform_title">{$lang->set_inquiry_inform_title}</label>
+		<div class="x_controls">
+			<block loop="$board_list=>$key,$val">
+				<label class="x_inline" for="monitor_{$val->module_srl}"><input type="checkbox" name="monitor_board[]" id="monitor_board[]" value="{$val->module_srl}_doc" checked="checked"|cond="$config->monitor_board[$val->module_srl.'_doc']=='on'" /> {$val->mid} document</label>
+				<label class="x_inline" for="monitor_{$val->module_srl}"><input type="checkbox" name="monitor_board[]" id="monitor_board[]" value="{$val->module_srl}_com" checked="checked"|cond="$config->monitor_board[$val->module_srl.'_com']=='on'" /> {$val->mid} comment</label><BR>
+			</block>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="inquiry_inform_title">{$lang->title_except_grp_mgmt}</label>
+		<div class="x_controls">
+			<block loop="$group_list=>$key,$val">
+				<label class="x_inline" for="except_member_group"><input type="checkbox" name="except_member_group[]" id="except_member_group[]" value="{$val->group_srl}" checked="checked"|cond="$config->except_member_group[$val->group_srl]=='Y'" /> {$val->title}</label>
+			</block>
+			<a href="#except_member_group_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="except_member_group_help" class="x_help-block" hidden>{$lang->about_except_member_group}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label">{$lang->title_crm_responsible_number}</label>
+		<div class="x_controls">
+			<input type="text" size="5" maxlength="500" name="crm_responsible_number" value="{$config->crm_responsible_number}" />
+			<a href="#crm_responsible_number_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="crm_responsible_number_help" class="x_help-block" hidden>{$lang->about_crm_responsible_number}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label">{$lang->title_crm_slack_web_hook_url}</label>
+		<div class="x_controls">
+			<input type="text" size="5" maxlength="500" name="crm_slack_web_hook_url" value="{$config->crm_slack_web_hook_url}" />
+			<a href="#crm_slack_web_hook_url_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="crm_slack_web_hook_url_help" class="x_help-block" hidden>{$lang->about_crm_slack_web_hook_url}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label">{$lang->title_crm_slack_ch}</label>
+		<div class="x_controls">
+			<input type="text" size="5" maxlength="500" name="crm_slack_ch" value="{$config->crm_slack_ch}" />
+			<a href="#crm_slack_ch_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="crm_slack_ch_help" class="x_help-block" hidden>{$lang->about_crm_slack_ch}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label">{$lang->title_crm_slack_username}</label>
+		<div class="x_controls">
+			<input type="text" size="5" maxlength="500" name="crm_slack_username" value="{$config->crm_slack_username}" />
+			<a href="#crm_slack_username_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="crm_slack_username_help" class="x_help-block" hidden>{$lang->about_crm_slack_username}</p>
+		</div>
+	</div>
+</section>
+<div class="x_clearfix btnArea">
+	<button type="submit" class="x_btn x_btn-primary">{$lang->cmd_submit}</button>
+</div>
+</form>

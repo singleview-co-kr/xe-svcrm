@@ -1,0 +1,102 @@
+<include target="_header.html" />
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+<form action="./" method="post" class="x_form-horizontal">
+<input name="act" type="hidden" value="procSvcrmAdminUpdateSmsOrderStatusUpdateMgmt" />
+<input name="module" type="hidden" value="{$module}" />
+<section class="section">
+	<h1>
+		{$lang->title_order_status_update_inform_mgmt}
+		<a href="#aboutOrderStatusInformMgmt" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+	</h1>
+	<p id="aboutOrderStatusInformMgmt" class="x_alert x_alert-info-block" hidden>{$lang->about_order_status_update_inform_mgmt}</p>
+	<div class="x_control-group">
+		<label class="x_control-label" for="sms_order_status_wait_for_deposit">{$lang->sms_order_status_wait_for_deposit}</label>
+		<div class="x_controls" >
+			<textarea name="sms_order_status_wait_for_deposit">{$config->sms_order_status_wait_for_deposit}</textarea>
+			<label class="x_inline" for="sms_order_status_wait_for_deposit_yn">
+				<input type="radio" name="sms_order_status_wait_for_deposit_yn" id="sms_order_status_wait_for_deposit_yn" value="off" checked="checked"|cond="$config->sms_order_status_wait_for_deposit_yn=='' || $config->sms_order_status_wait_for_deposit_yn=='off'" />
+				{$lang->cmd_sms_off}
+				<input type="radio" name="sms_order_status_wait_for_deposit_yn" id="sms_order_status_wait_for_deposit_yn" value="on" checked="checked"|cond="$config->sms_order_status_wait_for_deposit_yn=='on'" />
+				{$lang->cmd_sms_on}
+			</label>
+			<a href="#sms_order_status_wait_for_deposit_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="sms_order_status_wait_for_deposit_help" class="x_help-block" hidden>{$lang->about_sms_order_status_wait_for_deposit}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="sms_order_status_deposit_confirmed">{$lang->sms_order_status_deposit_confirmed}</label>
+		<div class="x_controls" >
+			<textarea name="sms_order_status_deposit_confirmed">{$config->sms_order_status_deposit_confirmed}</textarea>
+			<label class="x_inline" for="sms_order_status_deposit_confirmed_yn">
+				<input type="radio" name="sms_order_status_deposit_confirmed_yn" id="sms_order_status_deposit_confirmed_yn" value="off" checked="checked"|cond="$config->sms_order_status_deposit_confirmed_yn=='' || $config->sms_order_status_deposit_confirmed_yn=='off'" />
+				{$lang->cmd_sms_off}
+				<input type="radio" name="sms_order_status_deposit_confirmed_yn" id="sms_order_status_deposit_confirmed_yn" value="on" checked="checked"|cond="$config->sms_order_status_deposit_confirmed_yn=='on'" />
+				{$lang->cmd_sms_on}
+			</label>
+			<a href="#sms_order_status_deposit_confirmed_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="sms_order_status_deposit_confirmed_help" class="x_help-block" hidden>{$lang->about_sms_order_status_deposit_confirmed}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="sms_order_status_delivery_preparation">{$lang->sms_order_status_delivery_preparation}</label>
+		<div class="x_controls" >
+			<textarea name="sms_order_status_delivery_preparation">{$config->sms_order_status_delivery_preparation}</textarea>
+			<label class="x_inline" for="sms_order_status_delivery_preparation_yn">
+				<input type="radio" name="sms_order_status_delivery_preparation_yn" id="sms_order_status_delivery_preparation_yn" value="off" checked="checked"|cond="$config->sms_order_status_delivery_preparation_yn=='' || $config->sms_order_status_delivery_preparation_yn=='off'" />
+				{$lang->cmd_sms_off}
+				<input type="radio" name="sms_order_status_delivery_preparation_yn" id="sms_order_status_delivery_preparation_yn" value="on" checked="checked"|cond="$config->sms_order_status_delivery_preparation_yn=='on'" />
+				{$lang->cmd_sms_on}
+			</label>
+			<a href="#sms_order_status_delivery_preparation_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="sms_order_status_delivery_preparation_help" class="x_help-block" hidden>{$lang->about_sms_order_status_delivery_preparation}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="sms_order_status_on_delivery">{$lang->sms_order_status_on_delivery}</label>
+		<div class="x_controls" >
+			<textarea name="sms_order_status_on_delivery">{$config->sms_order_status_on_delivery}</textarea>
+			<label class="x_inline" for="sms_order_status_on_delivery_yn">
+				<input type="radio" name="sms_order_status_on_delivery_yn" id="sms_order_status_on_delivery_yn" value="off" checked="checked"|cond="$config->sms_order_status_on_delivery_yn=='' || $config->sms_order_status_on_delivery_yn=='off'" />
+				{$lang->cmd_sms_off}
+				<input type="radio" name="sms_order_status_on_delivery_yn" id="sms_order_status_on_delivery_yn" value="on" checked="checked"|cond="$config->sms_order_status_on_delivery_yn=='on'" />
+				{$lang->cmd_sms_on}
+			</label>
+			<a href="#sms_order_status_on_delivery_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="sms_order_status_on_delivery_help" class="x_help-block" hidden>{$lang->about_sms_order_status_on_delivery}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="sms_order_status_cancel_request">{$lang->sms_order_status_cancel_request}</label>
+		<div class="x_controls" >
+			<textarea name="sms_order_status_cancel_request">{$config->sms_order_status_cancel_request}</textarea>
+			<label class="x_inline" for="sms_order_status_cancel_request_yn">
+				<input type="radio" name="sms_order_status_cancel_request_yn" id="sms_order_status_cancel_request_yn" value="off" checked="checked"|cond="$config->sms_order_status_cancel_request_yn=='' || $config->sms_order_status_cancel_request_yn=='off'" />
+				{$lang->cmd_sms_off}
+				<input type="radio" name="sms_order_status_cancel_request_yn" id="sms_order_status_cancel_request_yn" value="on" checked="checked"|cond="$config->sms_order_status_cancel_request_yn=='on'" />
+				{$lang->cmd_sms_on}
+			</label>
+			<a href="#sms_order_status_cancel_request_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="sms_order_status_cancel_request_help" class="x_help-block" hidden>{$lang->about_sms_order_status_cancel_request}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="sms_order_status_cancel_completed">{$lang->sms_order_status_cancel_completed}</label>
+		<div class="x_controls" >
+			<textarea name="sms_order_status_cancel_completed">{$config->sms_order_status_cancel_completed}</textarea>
+			<label class="x_inline" for="sms_order_status_cancel_completed_yn">
+				<input type="radio" name="sms_order_status_cancel_completed_yn" id="sms_order_status_cancel_completed_yn" value="off" checked="checked"|cond="$config->sms_order_status_cancel_completed_yn=='' || $config->sms_order_status_cancel_completed_yn=='off'" />
+				{$lang->cmd_sms_off}
+				<input type="radio" name="sms_order_status_cancel_completed_yn" id="sms_order_status_cancel_completed_yn" value="on" checked="checked"|cond="$config->sms_order_status_cancel_completed_yn=='on'" />
+				{$lang->cmd_sms_on}
+			</label>
+			<a href="#sms_order_status_cancel_completed_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="sms_order_status_cancel_completed_help" class="x_help-block" hidden>{$lang->about_sms_order_status_cancel_completed}</p>
+		</div>
+	</div>
+</section>
+<div class="x_clearfix btnArea">
+	<button type="submit" class="x_btn x_btn-primary">{$lang->cmd_submit}</button>
+</div>
+</form>

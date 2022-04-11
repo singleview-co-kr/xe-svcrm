@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+	<actions>
+		<action name="dispSvcrmAdminIndex" type="view" admin_index="true" />
+		<action name="dispSvcrmAdminModInstList" type="view" />
+		<action name="dispSvcrmAdminInsertModInst" type="view" />
+		<action name="dispSvcrmAdminCustomerList" type="view" />
+		<action name="dispSvcrmAdminConsumerInterest" type="view" />
+		<action name="dispSvcrmAdminRegistrationMgmt" type="view" />
+		<action name="dispSvcrmAdminOrderInformMgmt" type="view" />
+		<action name="dispSvcrmAdminInquiryInformMgmt" type="view" />
+		<action name="dispSvcrmAdminConfig" type="view" />
+		<action name="dispSvcrmAdminPrivacyAccessConfig" type="view" />
+		<action name="dispSvcrmAdminGuestSms" type="view" />
+		<action name="dispSvcrmAdminGmailConfig" type="view" />
+
+		<action name="procSvcrmAdminInsertConfig" type="controller" />
+		<action name="procSvcrmAdminInsertModInst" type="controller" />
+		<action name="procSvcrmAdminDeleteModInst" type="controller" />
+		<action name="procSvcrmAdminUpdateRegistrationMgmt" type="controller" />
+		<action name="procSvcrmAdminUpdateSmsOrderStatusUpdateMgmt" type="controller" />
+		<action name="procSvcrmAdminUpdateInquiryInformMgmt" type="controller" />
+		<action name="procSvcrmAdminUpdatePrivacyAccess" type="controller" />
+		<action name="procSvcrmAdminSendSmsToMember" type="controller" />
+		<action name="procSvcrmAdminSendSmsToGuest" type="controller" />
+		<action name="procSvcrmAdminUpdateGmailMgmt" type="controller" />
+		<action name="procSvcrmAdminTestSendGmail" type="controller" />
+		<action name="procSvcrmAdminCSVDownloadByMember" type="controller" />
+
+		<action name="getSvcrmAdminDeleteModInst" type="model" />
+
+		<action name="dispSvcrmIndex" type="view" index="true" />
+    </actions>
+</module>

@@ -1,0 +1,11 @@
+<table name="svcrm_engage_log">
+    <column name="log_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment"/>
+    <column name="session_key" type="varchar" size="255" notnull="notnull" index="idx_session_key" />
+    <column name="member_srl" type="number" size="11" notnull="notnull" index="idx_member_srl" />
+    <column name="document_srl" type="number" size="11" notnull="notnull" index="idx_doc_srl" />
+    <column name="comment_srl" type="number" size="11" default="0" notnull="notnull" index="idx_comment_srl" />
+    <column name="elapsed_sec_last_intreact" type="number" size="11" notnull="notnull" />
+    <column name="val" type="bigtext" />
+    <column name="cur_mid" type="varchar" size="128" />
+    <column name="regdate" type="date" notnull="notnull" />
+</table>

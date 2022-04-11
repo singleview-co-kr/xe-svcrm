@@ -1,0 +1,10 @@
+<table name="svcrm_communication_history">
+	<column name="history_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment"/>
+	<column name="sender_member_srl" type="number" size="11" notnull="notnull" index="idx_sender_member_srl" />
+	<column name="recepient_member_srl" type="number" size="11" notnull="notnull" index="idx_recepient_member_srl" />
+	<column name="recipient_no" type="varchar" size="11" />
+	<!-- 0: SMS, 1: email -->
+	<column name="medium_type" type="number" size="11" notnull="notnull" index="idx_medium_type" />
+	<column name="content" type="text"/>
+	<column name="regdate" type="date" notnull="notnull" />
+</table>

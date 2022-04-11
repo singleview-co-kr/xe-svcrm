@@ -1,0 +1,1304 @@
+v 0.0.1
+17th, Mar 2017
+1. 모듈 개발 시작
+
+v 0.0.2
+22th, Mar 2017
+1. 회원 가입 프로모션 쿠폰 발행 시 member_srl 지정 기능 추가
+./svcrm.controller.php::triggerInsertMemberAfter()에 아래의 코드를
+$oSvpromotionAdminController->insertCoupon($nPromotionSrl, $sCouponSerial);
+아래와 같이 변경
+$oSvpromotionAdminController->insertCoupon($nPromotionSrl, $sCouponSerial, $obj->member_srl);
+
+v 0.0.3
+30th, Mar 2017
+1. ./svcrm.controller.php::notifyOrderStatusUpdate() 추가
+
+v 0.0.4
+1st, Apr 2017
+1. 회원가입 환영 SMS ON OFF 기능 추가
+./tpl/member_registration_mgmt.html에 아래의 코드 추가
+<div class="x_control-group">
+	<label class="x_control-label" for="sms_welcome_yn">{$lang->sms_welcome_msg_yn}</label>
+	<div class="x_controls" >
+		<label class="x_inline" for="sms_welcome_msg_yn">
+			<input type="radio" name="sms_welcome_msg_yn" id="sms_welcome_msg_yn" value="off" checked="checked"|cond="$val->current_opt=='ignore_this_value'" />
+			{$lang->cmd_sms_welcom_off}
+			<input type="radio" name="sms_welcome_msg_yn" id="sms_welcome_msg_yn" value="on" checked="checked"|cond="$val->current_opt=='ignore_this_value'" />
+			{$lang->cmd_sms_welcom_on}
+		</label>
+	</div>
+</div>
+
+./svcrm.admin.controller.php::procSvcrmAdminUpdateRegistrationMgmt()에 아래의 코드 추가
+$sSmsWelcomeActivate = Context::get('sms_welcome_msg_yn');	
+$oArgs->sms_welcome_msg_activate = $sSmsWelcomeActivate;
+
+./svcrm.controller.php::triggerInsertMemberAfter()에 아래의 코드 추가
+if( $config->sms_welcome_msg_activate == 'off' || is_null( $config->sms_welcome_msg_activate ) || is_null( getClass('textmessage') ))
+	return new Object();
+
+2. 주문 상태 SMS 알림 기능 추가
+./svcrm.admin.view.php::dispSvcrmAdminOrderInformMgmt() 추가
+./svcrm.admin.controller.php::procSvcrmAdminUpdateSmsOrderStatusUpdateMgmt() 추가
+
+3. module config 저장 기능 개선
+./svcrm.admin.controller.php::_saveModuleConfig() 추가
+
+v 0.0.5
+22nd, Apr 2017
+1. 주문 상태 SMS 알림 기능에서 취소요청중, 취소완료 추가
+./tpl/order_status_inform_mgmt.html에서 아래의 코드를
+$lang->sms_order_status_cancel
+$config->sms_order_status_cancel
+$config->sms_order_status_cancel_yn
+$lang->about_sms_order_status_cancel
+
+아래와 같이 변경
+$lang->sms_order_status_cancel_request
+$config->sms_order_status_cancel_request
+$config->sms_order_status_cancel_request_yn
+$lang->about_sms_order_status_cancel_request
+
+./tpl/order_status_inform_mgmt.html에 아래의 코드를 추가
+<div class="x_control-group">
+	<label class="x_control-label" for="sms_order_status_cancel_completed">{$lang->sms_order_status_cancel_completed}</label>
+	<div class="x_controls" >
+		<textarea name="sms_order_status_cancel_completed">{$config->sms_order_status_cancel_completed}</textarea>
+		<label class="x_inline" for="sms_order_status_cancel_completed_yn">
+			<input type="radio" name="sms_order_status_cancel_completed_yn" id="sms_order_status_cancel_completed_yn" value="off" checked="checked"|cond="sms_order_status_cancel_completed_yn=='' || $config->sms_order_status_cancel_completed_yn=='off'" />
+			{$lang->cmd_sms_off}
+			<input type="radio" name="sms_order_status_cancel_completed_yn" id="sms_order_status_cancel_completed_yn" value="on" checked="checked"|cond="$config->sms_order_status_cancel_completed_yn=='on'" />
+			{$lang->cmd_sms_on}
+		</label>
+		<a href="#sms_order_status_cancel_completed_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+		<p id="sms_order_status_cancel_completed_help" class="x_help-block" hidden>{$lang->about_sms_order_status_cancel_completed}</p>
+	</div>
+</div>
+
+./svcrm.admin.controller.php::procSvcrmAdminUpdateSmsOrderStatusUpdateMgmt()에서 아래의 코드를
+$sCancelMsg = trim(Context::get('sms_order_status_cancel'));
+$sCancelMsgActivate = Context::get('sms_order_status_cancel_yn');
+$oArgs->sms_order_status_cancel = $sCancelMsg;
+$oArgs->sms_order_status_cancel_yn = $sCancelMsgActivate;
+
+아래와 같이 변경
+$sCancelRequestMsg = trim(Context::get('sms_order_status_cancel_request'));
+$sCancelRequestMsgActivate = Context::get('sms_order_status_cancel_request_yn');
+$oArgs->sms_order_status_cancel_request = $sCancelRequestMsg;
+$oArgs->sms_order_status_cancel_request_yn = $sCancelRequestMsgActivate;
+
+./svcrm.admin.controller.php::procSvcrmAdminUpdateSmsOrderStatusUpdateMgmt()에 아래의 코드를 추가
+$sCancelCompletedMsg = trim(Context::get('sms_order_status_cancel_completed'));
+$sCancelCompletedMsgActivate = Context::get('sms_order_status_cancel_completed_yn');
+$sCancelCompletedMsgActivate = 'off';
+
+if( strlen( $sCancelCompletedMsg ) == 0 || is_null( $sCancelCompletedMsg ) )
+	$sCancelCompletedMsgActivate = 'off';
+
+$oArgs->sms_order_status_cancel_completed = $sCancelCompletedMsg;
+$oArgs->sms_order_status_cancel_completed_yn = $sCancelCompletedMsgActivate;
+
+./svcrm.controller.php::notifyOrderStatusUpdate()에서 아래의 코드를
+case A: //취소 완료
+	if( $config->sms_order_status_cancel_yn == 'on' )
+		$sContents = 'sms_order_status_cancel';
+	break;
+
+아래와 같이 변경
+case A: //취소 완료
+	if( $config->sms_order_status_cancel_completed_yn == 'on' )
+		$sContents = 'sms_order_status_cancel_completed';
+	break;
+
+./svcrm.controller.php::notifyOrderStatusUpdate()에 아래의 코드를 추가
+case E: //취소 요청
+	if( $config->sms_order_status_cancel_request_yn == 'on' )
+		$sContents = 'sms_order_status_cancel_request';
+	break;
+
+v 0.0.6
+16th, May 2017
+1. 고객 목록 표시
+./svcrm.admin.view.php::dispSvcrmAdminCustomerList() 추가
+
+2. 고객 상세 정보 표시
+./svcrm.admin.view.php::dispSvcrmAdminConsumerInterest() 추가
+
+3. 게시판 회원관리 팝업에 SVCRM 메뉴 표시
+./svcrm.model.php::triggerMemberMenu() 추가
+
+v 0.0.7
+18th, May 2017
+1. 실명 인증 고객 개인정보 표시
+./svcrm.admin.view.php::dispSvcrmAdminCustomerList() 추가
+./svcrm.permission.php 개인정보 접근 권한 설정 파일 추가 -> 개인정보 접근 권한 DB화 시키고, 접근 권한 수정 허용만 설정하는 코드로 변경
+
+v 0.0.8
+19th, May 2017
+1. 고객 목록 표시 항목 변경
+./tpl/member_list.html을 consumer_list.html로 변경
+
+v 0.0.9
+6th, Jun 2017
+1. 게시판 글등록되면 관리자에게 SMS로 통지 기능
+./svcrm.admin.view.php::dispSvcrmAdminInquiryInformMgmt() 추가
+./svcrm.admin.controller.php::procSvcrmAdminUpdateInquiryInformMgmt() 추가
+./tpl/board_inform_mgmt.html 추가
+./svcrm.controller.php::triggerInsertDocument() 추가
+
+v 0.1.0
+21st, Jun 2017
+1. 개인정보 열람 권한 설정을 DB로 이동
+./svcrm.admin.view.php::dispSvcrmAdminPrivacyAccessConfig() 추가
+./tpl/privacy_access.html 추가
+./svcrm.admin.controller.php::procSvcrmAdminUpdatePrivacyAccess() 추가
+./svcrm.admin.model.php::checkPrivacyAccessConfigurePermission() 추가
+
+./svcrm.admin.view.php::dispSvcrmAdminConsumerInterest()에서 아래의 코드를
+require_once('svcrm.permission.php');
+$oSvauthAdminModel = &getAdminModel('svauth');
+$oData = $oSvauthAdminModel->getMemberAuthInfo($nMemberSrl,aPrivacyAccess);
+
+아래와 같이 변경
+$oSvcrmAdminModel = &getAdminModel('svcrm');
+$oConfig = $oSvcrmAdminModel->getModuleConfig();
+$oSvauthAdminModel = &getAdminModel('svauth');
+$oData = $oSvauthAdminModel->getMemberAuthInfo($nMemberSrl,$oConfig->privacy_access_policy);
+
+v 0.1.1
+4th, Jul 2017
+1. 관리자가 개별 고객에게 SMS 전송 기능 추가
+./svcrm.admin.controller.php::procSvcrmAdminSendSmsToMember() 추가
+./schemas/svcrm_communication_history.xml 추가
+./queries/getCommLogByMemberSrl.xml 추가
+./queries/insertCommLog.xml 추가
+
+2. SMS 발송 메소드 통일
+./svcrm.controller.php::sendSmsToMember() 추가
+./svcrm.controller.php::sendSmsToAdmin() 추가
+
+v 0.1.2
+16th, Aug 2017
+1. 회원+실명정보 csv 다운로드 기능 추가
+./svcrm.admin.controller.php::procSvcrmAdminCSVDownloadByMember() 추가
+./tpl/consumer_list.html에 아래의 코드 추가
+<form action="./" method="post" id='frmCsvDownloadByOrder' name="frmCsvDownloadByMember">
+<input type='hidden' name='module' id='module' value='svshopmaster'/>
+<input type='hidden' name='act' id='act' value='procSvcrmAdminCSVDownloadByMember'/>
+<input type='hidden' name='status' id='status' value='{$status}'/>
+</form>
+<script type="text/javascript">
+function downloadCsv()
+{
+	document.frmCsvDownloadByMember.submit();
+}
+</script>
+
+./queries/getAuthMemberList.xml 추가
+
+./svcrm.admin.controller.php::procSvcrmAdminCSVDownloadByMember() 추가
+./tpl/consumer_list.html에 아래의 코드 추가
+<form action="./" method="post" id='frmCsvDownloadByOrder' name="frmCsvDownloadByMember">
+<input type='hidden' name='module' id='module' value='svshopmaster'/>
+<input type='hidden' name='act' id='act' value='procSvcrmAdminCSVDownloadByMember'/>
+</form>
+<script type="text/javascript">
+function downloadCsv()
+{
+	document.frmCsvDownloadByMember.submit();
+}
+</script>
+
+v 0.1.3
+21st, Aug 2017
+1. svcrm 독립 작동 상황에서 에러 수정
+./svcrm.admin.view.php::dispSvcrmAdminRegistrationMgmt()에 아래의 코드 추가
+if( getClass('svpromotion') )
+./tpl/member_registration_mgmt.html에 아래의 코드 추가
+<block cond="$coupon_promotion_list">
+return new Object(-1, 'msg_error_svpromotion_not_exsited');
+
+./svcrm.admin.view.php::dispSvcrmAdminCustomerList()에 아래의 코드 추가
+if( getClass( 'svauth') )
+return new Object(-1, 'msg_error_svauth_not_exsited');
+
+./svcrm.admin.view.php::dispSvcrmAdminOrderInformMgmt()에 아래의 코드 추가
+if( getClass( 'svorder') )
+return new Object(-1, 'msg_error_svorder_not_exsited');
+
+2. 서로 다른 사이트에서 게시판 글 등록 알람 식별을 위해서 경고 문구 변경
+./svcrm.controller.php::triggerInsertDocument()에서 아래의 코드를
+$args->content = $obj->mid.'게시판에 '.$obj->document_srl.'번 글 등록';
+아래와 같이 변경
+$args->content = $_SERVER[SERVER_NAME].' '.$obj->mid.'에 '.$obj->document_srl.'글 등록';
+
+v 0.1.4
+27th, Aug 2017
+1. 비회원 SMS 전송 기능 추가
+관리자에서 [CRM 관리]를 [실명인증 CRM 관리]로 변경
+./svcrm.admin.view.php::dispSvcrmAdminGuestSms() 추가
+./tpl/guest_sms_mgmt.html 추가
+./svcrm.admin.controller.php::procSvcrmAdminSendSmsToGuest() 추가
+./svcrm.controller.php::sendSmsToMember()를 sendSms()로 변경
+
+2. SMS 전송 시 전송내용에 따라 SMS,LMS 자동 판단 기능 추가
+./svcrm.controller.php::sendSms()에 아래의 코드 추가
+$nBytes = (int)mb_strlen($oInArgs->content, 'UTF-8');
+if( $nBytes <= 48 )
+	$oArgs->type = 'SMS';
+else
+	$oArgs->type = 'LMS';
+
+v 0.1.5
+30th, Aug 2017
+1. 비회원 SMS 전송할 때 핸드폰번호에 - 기호 자동 제거 기능 추가
+./svcrm.admin.controller.php::procSvcrmAdminSendSmsToGuest()에서 아래의 코드를
+$sGuestPhoneNumber = strip_tags(trim(Context::get('guest_phone_number')));
+아래와 같이 변경
+$sGuestPhoneNumber =  preg_replace("/[^0-9]*/s", '', strip_tags(trim(Context::get('guest_phone_number'))));
+
+v 0.1.6
+2nd, Aug 2017
+1. dispSvcrmAdminConsumerInterest에서 거래내역 바로가기 기능 추가
+./tpl/consumer_history.html에 아래의 코드를
+<td>{$order_info->order_srl}</td>
+아래와 같이 변경
+<td><A HREF='/index.php?module=svshopmaster&act=dispSvorderAdminOrderDetail&order_srl={$order_info->order_srl}'>{$order_info->order_srl}</A></td>
+
+v 0.1.7
+5th, Aug 2017
+1. 관리자가 글 작성하면 SMS 알람 전송안함
+./svcrm.admin.controller.php::procSvcrmAdminSendSmsToGuest()에 아래의 코드를 추가
+$oMemberModel = &getModel('member');
+if( $obj->member_srl )
+{
+	$oWriterInfo = $oMemberModel->getMemberInfoByMemberSrl((int)$obj->member_srl);
+	if( $oWriterInfo->is_admin == 'Y' )
+		return;
+}
+
+v 0.1.8
+20th, Sep 2017
+1. 개인정보 열람권한 설정 화면 설명글 개선
+./tpl/privacy_acceess_mgmt.html에서 아래의 코드를
+{$lang->title_inquiry_inform_mgmt}
+{$lang->about_inquiry_inform_mgmt}
+아래와 같이 변경
+{$lang->title_privacy_acceess_level_mgmt}
+{$lang->about_privacy_acceess_level_mgmt}
+
+v 0.1.9
+2nd, Apr 2018
+1. 게시판 글등록 알림 예외 그룹 기능 추가
+./svcrm.admin.view.php::dispSvcrmAdminInquiryInformMgmt()에 아래의 코드 추가
+$oMemberModel = getModel('member');
+$oGroups = $oMemberModel->getGroups();
+$aGroupList = array();
+foreach( $oGroups as $key=>$val )
+{
+	$aGroupList[$key]->group_srl = $val->group_srl;
+	$aGroupList[$key]->title = $val->title;
+}
+Context::set('group_list', $aGroupList);
+
+./svcrm.admin.controller.php::procSvcrmAdminUpdateInquiryInformMgmt()에 아래의 코드 추가
+if( isset( $oTempArgs->except_member_group  ) )
+{
+	$aTemp = array();
+	foreach( $oTempArgs->except_member_group as $key=>$val)
+		$aTemp[$val] = 'Y';
+	$oTempArgs->except_member_group = $aTemp;
+}
+
+if( $key == 'except_member_group' )
+	$aExceptGrp = $val;
+
+$oArgs->except_member_group = $aExceptGrp;
+
+./tpl/board_inform_mgmt.html에 아래의 코드 추가
+<div class="x_control-group">
+	<label class="x_control-label" for="inquiry_inform_title">{$lang->title_except_grp_mgmt}</label>
+	<div class="x_controls">
+		<block loop="$group_list=>$key,$val">
+			<label class="x_inline" for="except_member_group"><input type="checkbox" name="except_member_group[]" id="except_member_group[]" value="{$val->group_srl}" checked="checked"|cond="$config->except_member_group[$val->group_srl]=='Y'" /> {$val->title}</label>
+		</block>
+	</div>
+</div>
+
+./svcrm.controller.php::triggerInsertDocument()에서 아래의 코드를
+$oMemberModel = &getModel('member');
+if( $obj->member_srl )
+{
+	$oWriterInfo = $oMemberModel->getMemberInfoByMemberSrl((int)$obj->member_srl);
+	if( $oWriterInfo->is_admin == 'Y' )
+		return;
+}
+
+$oSvcrmAdminModel = &getAdminModel('svcrm');
+$config = $oSvcrmAdminModel->getModuleConfig();
+if( is_null( $config->crm_responsible_number ) )
+	return;
+else
+	$aRecipientNo = explode( ';', $config->crm_responsible_number );
+아래와 같이 변경
+$oSvcrmAdminModel = &getAdminModel('svcrm');
+$config = $oSvcrmAdminModel->getModuleConfig();
+if( is_null( $config->crm_responsible_number ) )
+	return;
+else
+	$aRecipientNo = explode( ';', $config->crm_responsible_number );
+
+$oMemberModel = &getModel('member');
+if( $obj->member_srl )
+{
+	$oWriterInfo = $oMemberModel->getMemberInfoByMemberSrl((int)$obj->member_srl);
+	if( $oWriterInfo->is_admin == 'Y' )
+		return;
+	
+	foreach( $oWriterInfo->group_list as $key=>$val)
+	{
+		if( $config->except_member_group[$key] == 'Y' )
+			return;
+	}
+}
+
+v 0.1.10
+4th, May 2018
+1. 주문 상태 변경 시 SMS 전송 활성화되지 않으면 구문 오류 발생 수정
+./svcrm.controller.php::notifyOrderStatusUpdate()에서 아래의 코드를
+switch( $oArgs->order_status )
+{
+	case 1: //입금대기
+		if( $config->sms_order_status_wait_for_deposit_yn == 'on' )
+			$sContents = 'sms_order_status_wait_for_deposit';
+		break;
+	case 2: //입금완료
+		if( $config->sms_order_status_deposit_confirmed_yn == 'on' )
+			$sContents = 'sms_order_status_deposit_confirmed';
+		break;
+	case 3: //배송준비
+		if( $config->sms_order_status_delivery_preparation_yn == 'on' )
+			$sContents = 'sms_order_status_delivery_preparation';
+		break;
+	case 4: //배송중
+		if( $config->sms_order_status_on_delivery_yn == 'on' )
+			$sContents = 'sms_order_status_on_delivery';
+		break;
+	case E: //취소 요청
+		if( $config->sms_order_status_cancel_request_yn == 'on' )
+			$sContents = 'sms_order_status_cancel_request';
+		break;
+	case A: //취소 완료
+		if( $config->sms_order_status_cancel_completed_yn == 'on' )
+			$sContents = 'sms_order_status_cancel_completed';
+		break;
+	default:
+		$sContents = 'not_selected';
+		break;
+}
+
+아래와 같이 변경
+$sContents = 'not_selected';
+switch( $oArgs->order_status )
+{
+	case 1: //입금대기
+		if( $config->sms_order_status_wait_for_deposit_yn == 'on' )
+			$sContents = 'sms_order_status_wait_for_deposit';
+		break;
+	case 2: //입금완료
+		if( $config->sms_order_status_deposit_confirmed_yn == 'on' )
+			$sContents = 'sms_order_status_deposit_confirmed';
+		break;
+	case 3: //배송준비
+		if( $config->sms_order_status_delivery_preparation_yn == 'on' )
+			$sContents = 'sms_order_status_delivery_preparation';
+		break;
+	case 4: //배송중
+		if( $config->sms_order_status_on_delivery_yn == 'on' )
+			$sContents = 'sms_order_status_on_delivery';
+		break;
+	case E: //취소 요청
+		if( $config->sms_order_status_cancel_request_yn == 'on' )
+			$sContents = 'sms_order_status_cancel_request';
+		break;
+	case A: //취소 완료
+		if( $config->sms_order_status_cancel_completed_yn == 'on' )
+			$sContents = 'sms_order_status_cancel_completed';
+		break;
+	default:
+		break;
+}
+
+v 0.1.11
+4th, May 2018
+1. 관리자에게 글 등록 알림에 slack messenger 기능 추가
+./slack.class.php 추가
+
+./svcrm.admin.controller.php::procSvcrmAdminUpdateInquiryInformMgmt()에 아래의 코드 추가
+$oArgs->crm_slack_api_token = trim($oTempArgs->crm_slack_api_token);
+$oArgs->crm_slack_ch = str_replace('#', '', trim($oTempArgs->crm_slack_ch));
+
+./tpl/board_inform_mgmt.html에 아래의 코드 추가
+<div class="x_control-group">
+	<label class="x_control-label">{$lang->title_crm_slack_api_token}</label>
+	<div class="x_controls">
+		<input type="text" size="5" maxlength="500" name="crm_slack_api_token" value="{$config->crm_slack_api_token}" />
+		<a href="#crm_slack_api_token_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+		<p id="crm_slack_api_token_help" class="x_help-block" hidden>{$lang->about_crm_slack_api_token}</p>
+	</div>
+</div>
+<div class="x_control-group">
+	<label class="x_control-label">{$lang->title_crm_slack_ch}</label>
+	<div class="x_controls">
+		<input type="text" size="5" maxlength="500" name="crm_slack_ch" value="{$config->crm_slack_ch}" />
+		<a href="#crm_slack_ch_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+		<p id="crm_slack_ch_help" class="x_help-block" hidden>{$lang->about_crm_slack_ch}</p>
+	</div>
+</div>
+
+./svcrm.controller.php::triggerInsertDocument()에서 아래의 코드를
+$oSvcrmAdminModel = &getAdminModel('svcrm');
+$config = $oSvcrmAdminModel->getModuleConfig();
+if( is_null( $config->crm_responsible_number ) )
+	return;
+else
+	$aRecipientNo = explode( ';', $config->crm_responsible_number );
+
+$oMemberModel = &getModel('member');
+if( $obj->member_srl )
+{
+	$oWriterInfo = $oMemberModel->getMemberInfoByMemberSrl((int)$obj->member_srl);
+	if( $oWriterInfo->is_admin == 'Y' )
+		return;
+	
+	foreach( $oWriterInfo->group_list as $key=>$val)
+	{
+		if( $config->except_member_group[$key] == 'Y' )
+			return;
+	}
+}
+
+$nModuleSrl = (int)$obj->module_srl;
+$args->type = 'SMS';
+$args->country_code = 82;
+$args->sender_no = $config->sender_no;
+$args->content = $_SERVER[SERVER_NAME].' '.$obj->mid.'에 '.$obj->document_srl.'글 등록';
+$controller = &getController('textmessage');
+
+foreach( $config->monitor_board as $key=>$val)
+{
+	if( $key == $nModuleSrl )
+	{
+		foreach( $aRecipientNo as $rekey=>$reval )
+		{
+			$args->recipient_no =  $reval;
+			$controller->sendMessage($args);
+		}
+		continue;
+	}
+}
+
+아래와 같이 변경
+$oMemberModel = &getModel('member');
+if( $obj->member_srl )
+{
+	$oWriterInfo = $oMemberModel->getMemberInfoByMemberSrl((int)$obj->member_srl);
+	if( $oWriterInfo->is_admin == 'Y' )
+		return;
+	
+	foreach( $oWriterInfo->group_list as $key=>$val)
+	{
+		if( $config->except_member_group[$key] == 'Y' )
+			return;
+	}
+}
+
+$oSvcrmAdminModel = &getAdminModel('svcrm');
+$config = $oSvcrmAdminModel->getModuleConfig();
+if( strlen( $config->crm_responsible_number ) )
+{
+	$aRecipientNo = explode( ';', $config->crm_responsible_number );
+	$nModuleSrl = (int)$obj->module_srl;
+	$args->type = 'SMS';
+	$args->country_code = 82;
+	$args->sender_no = $config->sender_no;
+	$args->content = $_SERVER[SERVER_NAME].'/'.$obj->mid.'/'.$obj->document_srl.' 글 등록';
+	$controller = &getController('textmessage');
+	
+	foreach( $config->monitor_board as $key=>$val)
+	{
+		if( $key == $nModuleSrl )
+		{
+			foreach( $aRecipientNo as $rekey=>$reval )
+			{
+				$args->recipient_no =  $reval;
+				$controller->sendMessage($args);
+			}
+			continue;
+		}
+	}
+	//return;
+}
+
+if( $config->crm_slack_api_token && $config->crm_slack_ch )
+{
+	$sConents = $_SERVER['SERVER_NAME'].'/'.$obj->mid.'/'.$obj->document_srl.PHP_EOL;
+	$sConents .= 'new '.$sDocType.' registered on '.date('Y-m-d H:i:s').PHP_EOL;
+	require_once(_XE_PATH_.'modules/svcrm/slack.class.php');
+	$slack = new svcrmSlack($config->crm_slack_api_token);
+	$slack->setChannel($config->crm_slack_ch);
+	$sConents .= '----------- msg begins ---------------'.PHP_EOL;
+	$sConents .= strip_tags($obj->content);
+	$sConents .= PHP_EOL.'----------- msg ends ---------------'.PHP_EOL;
+	$slack->setMessage($sConents);
+	$result = $slack->send();
+}
+
+2. slack messenger 설정되어 있으면 댓글 등록을 관리자에 통지하는 기능 추가
+./svcrm.class.php::checkUpdate()에 아래의 코드 추가
+if(!$oModuleModel->getTrigger('comment.insertComment', 'svcrm', 'controller', 'triggerInsertComment', 'after'))
+	return true;
+
+./svcrm.class.php::moduleUpdate()에 아래의 코드 추가
+$oModuleController->insertTrigger('comment.insertComment', 'svcrm', 'controller', 'triggerInsertComment', 'after');
+
+./svcrm.controller.php::triggerInsertComment() 추가
+
+v 0.1.12
+13th, Jul 2018
+1. 회원가입 알림 SMS에 nick_name 대치어 추가
+./svcrm.controller.php::triggerInsertMemberAfter()에서 아래의 코드를
+if( $nPromotionSrl )
+{
+	$oSvpromotionAdminModel = &getAdminModel('svpromotion');
+	$oCouponPromotionInfo = $oSvpromotionAdminModel->getCouponPromotionSetupInfo( $nPromotionSrl );
+	$sDiscType = $oCouponPromotionInfo->data[0]->descount_type;
+	switch( $sDiscType )
+	{
+		case 'amount':
+			$sDiscountInfo = $oCouponPromotionInfo->data[0]->descount_amount_policy.'원';
+			break;
+		case 'rate':
+			$sDiscountInfo = $oCouponPromotionInfo->data[0]->descount_rate_policy.'%';
+			break;
+		default:
+			$sDiscountInfo = '';
+			break;
+	}
+	$bSatisfied = true;
+	$oMemberRegistrationExtraVars = unserialize( $obj->extra_vars );
+	$oMemberModel = &getModel('member');
+	$oMemberJoinFormList = $oMemberModel->getUsedJoinFormList();
+
+	foreach( $oMemberJoinFormList as $key => $val )
+	{
+		if( $config->{$val->column_name} && $config->{$val->column_name} != 'ignore_this_value' && 
+			$oMemberRegistrationExtraVars->{$val->column_name} != $config->{$val->column_name} )
+			$bSatisfied = false;
+	}
+	if( $bSatisfied  )
+	{
+		$sCouponSerial = $oSvpromotionAdminModel->getCouponSerial(6);
+		$oSvpromotionAdminController = getAdminController('svpromotion');
+		$oSvpromotionAdminController->insertCoupon($nPromotionSrl, $sCouponSerial, $obj->member_srl);
+		//$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_with_coupon);
+		$sContents = str_replace("%p%", $sDiscountInfo, $sContents);
+		$sContents = str_replace("%c%", $sCouponSerial, $sContents);
+	}
+	//else
+	//	$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_default);
+}
+//else
+//	$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_default);
+
+아래와 같이 변경
+if( $nPromotionSrl )
+{
+	$oSvpromotionAdminModel = &getAdminModel('svpromotion');
+	$oCouponPromotionInfo = $oSvpromotionAdminModel->getCouponPromotionSetupInfo( $nPromotionSrl );
+	$sDiscType = $oCouponPromotionInfo->data[0]->descount_type;
+	switch( $sDiscType )
+	{
+		case 'amount':
+			$sDiscountInfo = $oCouponPromotionInfo->data[0]->descount_amount_policy.'원';
+			break;
+		case 'rate':
+			$sDiscountInfo = $oCouponPromotionInfo->data[0]->descount_rate_policy.'%';
+			break;
+		default:
+			$sDiscountInfo = '';
+			break;
+	}
+	$bSatisfied = true;
+	$oMemberRegistrationExtraVars = unserialize( $obj->extra_vars );
+	$oMemberModel = &getModel('member');
+	$oMemberJoinFormList = $oMemberModel->getUsedJoinFormList();
+
+	foreach( $oMemberJoinFormList as $key => $val )
+	{
+		if( $config->{$val->column_name} && $config->{$val->column_name} != 'ignore_this_value' && 
+			$oMemberRegistrationExtraVars->{$val->column_name} != $config->{$val->column_name} )
+			$bSatisfied = false;
+	}
+	if( $bSatisfied  )
+	{
+		$sCouponSerial = $oSvpromotionAdminModel->getCouponSerial(6);
+		$oSvpromotionAdminController = getAdminController('svpromotion');
+		$oSvpromotionAdminController->insertCoupon($nPromotionSrl, $sCouponSerial, $obj->member_srl);
+		$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_with_coupon);
+		$sContents = str_replace("%un%", $obj->user_name, $config->sms_welcome_msg_with_coupon);
+		$sContents = str_replace("%nn%", $obj->nick_name, $config->sms_welcome_msg_with_coupon);
+		$sContents = str_replace("%p%", $sDiscountInfo, $sContents);
+		$sContents = str_replace("%c%", $sCouponSerial, $sContents);
+	}
+	else
+	{
+		$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_default);
+		$sContents = str_replace("%un%", $obj->user_name, $config->sms_welcome_msg_default);
+		$sContents = str_replace("%nn%", $obj->nick_name, $config->sms_welcome_msg_default);
+	}
+}
+else
+{
+	$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_default);
+	$sContents = str_replace("%un%", $obj->user_name, $config->sms_welcome_msg_default);
+	$sContents = str_replace("%nn%", $obj->nick_name, $config->sms_welcome_msg_default);
+}
+
+v 0.1.13
+17th, Jul 2018
+1. slack messenger alarm의 코드 오류 수정
+
+./svcrm.controller.php::triggerInsertDocument()에서 아래의 코드를
+if( $config->crm_slack_api_token && $config->crm_slack_ch )
+	$this->_sendSlackMessage($obj, $config, 'document');
+
+아래와 같이 변경
+if( $config->crm_slack_api_token && $config->crm_slack_ch )
+{
+	foreach( $config->monitor_board as $key=>$val)
+	{
+		if( $key == $nModuleSrl )
+		{
+			$this->_sendSlackMessage($obj, $config, 'document');
+			continue;
+		}
+	}
+}
+
+./svcrm.controller.php::triggerInsertComment()에서 아래의 코드를
+if( $config->crm_slack_api_token && $config->crm_slack_ch )
+	$this->_sendSlackMessage($obj, $config, 'document');
+
+아래와 같이 변경
+if( $config->crm_slack_api_token && $config->crm_slack_ch )
+{
+	foreach( $config->monitor_board as $key=>$val)
+	{
+		if( $key == $nModuleSrl )
+		{
+			$this->_sendSlackMessage($obj, $config, 'comment');
+			continue;
+		}
+	}
+}
+
+v 0.1.14
+23rd, Aug 2018
+1. svshopmaster v 0.1.3의 레이아웃 표시 방법 변경에 대응
+./svcrm.admin.view.php::init()에 아래의 코드 추가
+if(Context::get('module') == 'svshopmaster')
+{
+	$sClassPath = _XE_PATH_ . 'modules/svshopmaster/svshopmaster.class.php';
+	if(file_exists($sClassPath))
+	{
+		require_once($sClassPath);
+		svshopmaster::init($this);
+	}
+}
+
+v 0.1.15
+5th, May 2019
+1. 회원 가입 환영 SMS 발송 ON/OFF와 환영 쿠폰 발급 ON/OFF를 분리함
+./tpl/member_registration_mgmt.html에 아래의 코드 추가
+<div class="x_control-group">
+	<label class="x_control-label" for="welcome_coupon_yn">{$lang->welcome_coupon_yn}</label>
+	<div class="x_controls" >
+		<label class="x_inline" for="sms_welcome_msg_yn">
+			<input type="radio" name="welcome_coupon_yn" id="welcome_coupon_yn" value="off" checked="checked"|cond="$config->welcome_coupon_yn=='' || $config->welcome_coupon_yn=='off'" />
+			{$lang->cmd_sms_off}
+			<input type="radio" name="welcome_coupon_yn" id="welcome_coupon_yn" value="on" checked="checked"|cond="$config->welcome_coupon_yn=='on'" />
+			{$lang->cmd_sms_on}
+		</label>
+		<a href="#welcome_coupon_yn_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+		<p id="welcome_coupon_yn_help" class="x_help-block" hidden>{$lang->about_welcome_coupon_yn}</p>
+	</div>
+</div>
+
+./svcrm.admin.controller.php::triggerInsertMemberAfter()에 아래의 코드 추가
+$oArgs->welcome_coupon_yn = Context::get('welcome_coupon_yn');
+
+./svcrm.admin.php::triggerInsertMemberAfter()에서 아래의 코드를
+if( $config->sms_welcome_msg_activate == 'off' || is_null( $config->sms_welcome_msg_activate ) || is_null( getClass('textmessage') ))
+	return new Object();
+
+$nPromotionSrl = (int)$config->registration_coupon_promotion_srl;
+if( $nPromotionSrl )
+{
+	$oSvpromotionAdminModel = &getAdminModel('svpromotion');
+	$oCouponPromotionInfo = $oSvpromotionAdminModel->getCouponPromotionSetupInfo( $nPromotionSrl );
+	$sDiscType = $oCouponPromotionInfo->data[0]->descount_type;
+	switch( $sDiscType )
+	{
+		case 'amount':
+			$sDiscountInfo = $oCouponPromotionInfo->data[0]->descount_amount_policy.'원';
+			break;
+		case 'rate':
+			$sDiscountInfo = $oCouponPromotionInfo->data[0]->descount_rate_policy.'%';
+			break;
+		default:
+			$sDiscountInfo = '';
+			break;
+	}
+	$bSatisfied = true;
+	$oMemberRegistrationExtraVars = unserialize( $obj->extra_vars );
+	$oMemberModel = &getModel('member');
+	$oMemberJoinFormList = $oMemberModel->getUsedJoinFormList();
+
+	foreach( $oMemberJoinFormList as $key => $val )
+	{
+		if( $config->{$val->column_name} && $config->{$val->column_name} != 'ignore_this_value' && 
+			$oMemberRegistrationExtraVars->{$val->column_name} != $config->{$val->column_name} )
+			$bSatisfied = false;
+	}
+	if( $bSatisfied  )
+	{
+		$sCouponSerial = $oSvpromotionAdminModel->getCouponSerial(6);
+		$oSvpromotionAdminController = getAdminController('svpromotion');
+		$oSvpromotionAdminController->insertCoupon($nPromotionSrl, $sCouponSerial, $obj->member_srl);
+		$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_with_coupon);
+		$sContents = str_replace("%un%", $obj->user_name, $config->sms_welcome_msg_with_coupon);
+		$sContents = str_replace("%nn%", $obj->nick_name, $config->sms_welcome_msg_with_coupon);
+		$sContents = str_replace("%p%", $sDiscountInfo, $sContents);
+		$sContents = str_replace("%c%", $sCouponSerial, $sContents);
+	}
+	else
+	{
+		$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_default);
+		$sContents = str_replace("%un%", $obj->user_name, $config->sms_welcome_msg_default);
+		$sContents = str_replace("%nn%", $obj->nick_name, $config->sms_welcome_msg_default);
+	}
+}
+else
+{
+	$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_default);
+	$sContents = str_replace("%un%", $obj->user_name, $config->sms_welcome_msg_default);
+	$sContents = str_replace("%nn%", $obj->nick_name, $config->sms_welcome_msg_default);
+}
+
+아래와 같이 변경
+$nPromotionSrl = (int)$config->registration_coupon_promotion_srl;
+if( $nPromotionSrl )
+{
+	$oSvpromotionAdminModel = &getAdminModel('svpromotion');
+	$oCouponPromotionInfo = $oSvpromotionAdminModel->getCouponPromotionSetupInfo( $nPromotionSrl );
+	$sDiscType = $oCouponPromotionInfo->data[0]->descount_type;
+	switch( $sDiscType )
+	{
+		case 'amount':
+			$sDiscountInfo = $oCouponPromotionInfo->data[0]->descount_amount_policy.'원';
+			break;
+		case 'rate':
+			$sDiscountInfo = $oCouponPromotionInfo->data[0]->descount_rate_policy.'%';
+			break;
+		default:
+			$sDiscountInfo = '';
+			break;
+	}
+	$bSatisfied = true;
+	$oMemberRegistrationExtraVars = unserialize( $obj->extra_vars );
+	$oMemberModel = &getModel('member');
+	$oMemberJoinFormList = $oMemberModel->getUsedJoinFormList();
+
+	foreach( $oMemberJoinFormList as $key => $val )
+	{
+		if( $config->{$val->column_name} && $config->{$val->column_name} != 'ignore_this_value' && 
+			$oMemberRegistrationExtraVars->{$val->column_name} != $config->{$val->column_name} )
+			$bSatisfied = false;
+	}
+	if( $bSatisfied  )
+	{
+		if( $config->welcome_coupon_yn == 'on' )
+		{
+			$sCouponSerial = $oSvpromotionAdminModel->getCouponSerial(6);
+			$oSvpromotionAdminController = getAdminController('svpromotion');
+			$oSvpromotionAdminController->insertCoupon($nPromotionSrl, $sCouponSerial, $obj->member_srl);
+			$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_with_coupon);
+			$sContents = str_replace("%un%", $obj->user_name, $config->sms_welcome_msg_with_coupon);
+			$sContents = str_replace("%nn%", $obj->nick_name, $config->sms_welcome_msg_with_coupon);
+			$sContents = str_replace("%p%", $sDiscountInfo, $sContents);
+			$sContents = str_replace("%c%", $sCouponSerial, $sContents);
+		}
+	}
+	else
+	{
+		$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_default);
+		$sContents = str_replace("%un%", $obj->user_name, $config->sms_welcome_msg_default);
+		$sContents = str_replace("%nn%", $obj->nick_name, $config->sms_welcome_msg_default);
+	}
+}
+else
+{
+	$sContents = str_replace("%i%", $obj->user_id, $config->sms_welcome_msg_default);
+	$sContents = str_replace("%un%", $obj->user_name, $config->sms_welcome_msg_default);
+	$sContents = str_replace("%nn%", $obj->nick_name, $config->sms_welcome_msg_default);
+}
+
+if( $config->sms_welcome_msg_activate == 'off' || is_null( $config->sms_welcome_msg_activate ) || is_null( getClass('textmessage') ))
+	return new Object();
+
+v 0.1.16
+1st, Jun 2019
+1. svshopmaster v 1.0.13에 대응
+./svorder.admin.view.php::init()에서 아래의 코드 제거
+if(Context::get('module')=='svshopmaster')
+{
+	$this->setLayoutPath('');
+	$this->setLayoutFile('common_layout');
+}
+
+v 0.1.17
+24th, Jul 2019
+1. 등록된 발신번호가 8자리 이상이면 SMS 발송하도록 개선 080-123-5678 번호 패턴 뿐만 아니라 1644-3333 과 같은 패턴도 수용해야 함
+./svcrm.controller.php::triggerInsertMemberAfter()에서 아래의 코드를
+if( strlen( $config->sender_no ) >= 9 )
+
+아래와 같이 변경
+if( strlen( $config->sender_no ) >= 8 )
+
+v 0.1.18
+1st, Aug 2019
+1. 코드 유지보수 편의성 개선
+./svcrm.controller.php::notifyOrderStatusUpdate()에서 아래의 코드를
+if($oSmsController)
+{
+	$sContents = 'not_selected';
+	switch( $oArgs->order_status )
+	{
+		case 1: //입금대기
+			if( $config->sms_order_status_wait_for_deposit_yn == 'on' )
+				$sContents = 'sms_order_status_wait_for_deposit';
+			break;
+		case 2: //입금완료
+			if( $config->sms_order_status_deposit_confirmed_yn == 'on' )
+				$sContents = 'sms_order_status_deposit_confirmed';
+			break;
+		case 3: //배송준비
+			if( $config->sms_order_status_delivery_preparation_yn == 'on' )
+				$sContents = 'sms_order_status_delivery_preparation';
+			break;
+		case 4: //배송중
+			if( $config->sms_order_status_on_delivery_yn == 'on' )
+				$sContents = 'sms_order_status_on_delivery';
+			break;
+		case E: //취소 요청
+			if( $config->sms_order_status_cancel_request_yn == 'on' )
+				$sContents = 'sms_order_status_cancel_request';
+			break;
+		case A: //취소 완료
+
+
+아래와 같이 변경
+$oSvorderModel = &getClass('svorder'); // to load svorder global defined
+if($oSmsController)
+{
+	$sContents = 'not_selected';
+	switch( $oArgs->order_status )
+	{
+		case svorder::ORDER_STATE_ON_DEPOSIT:
+			if( $config->sms_order_status_wait_for_deposit_yn == 'on' )
+				$sContents = 'sms_order_status_wait_for_deposit';
+			break;
+		case svorder::ORDER_STATE_PAID:
+			if( $config->sms_order_status_deposit_confirmed_yn == 'on' )
+				$sContents = 'sms_order_status_deposit_confirmed';
+			break;
+		case svorder::ORDER_STATE_PREPARE_DELIVERY:
+			if( $config->sms_order_status_delivery_preparation_yn == 'on' )
+				$sContents = 'sms_order_status_delivery_preparation';
+			break;
+		case svorder::ORDER_STATE_ON_DELIVERY:
+			if( $config->sms_order_status_on_delivery_yn == 'on' )
+				$sContents = 'sms_order_status_on_delivery';
+			break;
+		case svorder::ORDER_STATE_CANCEL_REQUESTED:
+			if( $config->sms_order_status_cancel_request_yn == 'on' )
+				$sContents = 'sms_order_status_cancel_request';
+			break;
+		case svorder::ORDER_STATE_CANCELLED:
+
+v 0.1.19
+7th, Aug 2019
+1. Gmail 발송 메소드 추가
+./svcrm/ext_class/PHPMailer-6.0.7 라이브러리 추가
+./svcrm.admin.controller.php::sendGmail() 추가
+./svcrm.admin.controller.php::procSvcrmAdminTestSendGmail() 추가
+./svcrm.admin.view.php::dispSvcrmAdminGmailConfig() 추가
+./tpl/gmail_mgmt.html 추가
+
+v 0.1.20
+25th, Sep 2019
+1. Gmail 발송 본문에 공통 푸터 삽입 기능 추가
+./tpl/gmail_mgmt.html에 아래의 코드 추가
+<div class="x_control-group">
+	<label class="x_control-label" for="gmail_common_footer">{$lang->gmail_common_footer}</label>
+	<div class="x_controls" >
+		<textarea name="gmail_common_footer"></textarea>
+		<a href="#gmail_common_footer_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+		<p id="gmail_common_footer_help" class="x_help-block" hidden>{$lang->about_gmail_common_footer}</p>
+	</div>
+</div>
+
+v 0.1.21
+4th, Nov 2019
+1. slack API 보안정책 변경된 것으로 추정하여 이에 대응
+./slack.class.php에서 아래의 코드를
+public function __construct($token, $username='Slack Bot') {
+
+아래와 같이 변경
+public function __construct($token, $username='Singleview Bot') {
+
+./tpl/board_inform_mgmt.html에 아래의 코드 추가
+<div class="x_control-group">
+	<label class="x_control-label">{$lang->title_crm_slack_username}</label>
+	<div class="x_controls">
+		<input type="text" size="5" maxlength="500" name="crm_slack_username" value="{$config->crm_slack_username}" />
+		<a href="#crm_slack_username_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+		<p id="crm_slack_username_help" class="x_help-block" hidden>{$lang->about_crm_slack_username}</p>
+	</div>
+</div>
+
+./svcrm.admin.controller.php::procSvcrmAdminUpdateInquiryInformMgmt()에 아래의 코드 추가
+$sSlackUserName = trim(strip_tags($oTempArgs->crm_slack_username));
+preg_match('/[Ss][Ll][Aa][Cc][Kk]/', $sSlackUserName, $matches, PREG_OFFSET_CAPTURE, 0); // slack API rejects slack-wise word
+if( array_key_exists( 0, $matches) )
+	return new Object(-1, 'msg_error_forbidden_slack_username');
+$oArgs->crm_slack_username = $sSlackUserName;
+
+./svcrm.controller.php::procSvcrmAdminUpdateInquiryInformMgmt()에서 아래의 코드를
+if( $config->crm_slack_api_token && $config->crm_slack_ch )
+
+아래와 같이 변경
+if( $config->crm_slack_api_token && $config->crm_slack_ch && $config->crm_slack_username )
+
+./svcrm.controller.php::_sendSlackMessage()에 아래의 코드 추가
+$slack->setUsetName($config->crm_slack_username);
+
+v 1.0.0
+23rd, Dec 2019
+1. sv commerce engine의 CRM 기능을 강화
+./svcrm.Log_trigger.php 추가
+
+./schemas/svcrm_cs_log.xml 추가
+./queries/insertCsLog.xml 추가
+./queries/getCsLogBySvOrderSrl.xml 추가
+
+./svcrm.admin.model.php::getCsLogByOrderSrl() 추가
+
+v 1.0.1
+12th, Feb 2020
+1. npay 과거 주문 정보 수집 시 취소 주문의 취소 사유에 반품 사유도 포함되는 현상에 대응
+./svcrm.Log_trigger.php::_parseTranslateParam()에서 아래의 코드를
+$sReturnReasonCode = array_search($oCsParam->sReturnReasonCode, $this->g_aNpayCancelReason);
+
+아래와 같이 변경
+$sReturnReasonCode = array_search($oCsParam->sReturnReasonCode, $this->g_aNpayCancelReturnReason);
+
+./svcrm.admin.model.php::getCsLogByOrderSrl()에서 아래의 코드를
+case svorder::ORDER_STATE_EXCHANGE_REQUESTED:
+case svorder::ORDER_STATE_RETURN_REQUESTED:
+	$sReturnReqReasonCode = array_search($oVal->related_claim_code, $oSvorderClass->g_aNpayReturnReason);
+	if( $sReturnReqReasonCode )
+	{
+		$aNpayReturnReqReason = Context::getLang('arr_npay_claim_return_reason');
+		$oVal->sClaimReason = $aNpayReturnReqReason[$sReturnReqReasonCode];
+	}
+	else
+		$oVal->sClaimReason = 'N/A';
+	break;
+case svorder::ORDER_STATE_CANCEL_REQUESTED:
+case svorder::ORDER_STATE_CANCELLED: // svorder 관리자 UI에서 품목별 결제 취소 전송
+	$sCancelReasonCode = array_search($oVal->related_claim_code, $oSvorderClass->g_aNpayCancelReason);
+	if( $sCancelReasonCode )
+	{
+		$aNpayCancelReason = Context::getLang('arr_cancel_reason');
+		$oVal->sClaimReason = $aNpayCancelReason[$sCancelReasonCode];
+	}
+	else
+		$oVal->sClaimReason = 'N/A';
+	break;
+
+아래와 같이 변경
+case svorder::ORDER_STATE_EXCHANGE_REQUESTED:
+case svorder::ORDER_STATE_RETURN_REQUESTED:
+	$sReturnReqReasonCode = array_search($oVal->related_claim_code, $oSvorderClass->g_aNpayCancelReturnReason);
+	if( $sReturnReqReasonCode )
+	{
+		$aNpayReturnReqReason = Context::getLang('arr_npay_claim_cancel_return_reason');
+		$oVal->sClaimReason = $aNpayReturnReqReason[$sReturnReqReasonCode];
+	}
+	else
+		$oVal->sClaimReason = 'N/A';
+	break;
+case svorder::ORDER_STATE_CANCEL_REQUESTED:
+case svorder::ORDER_STATE_CANCELLED: // svorder 관리자 UI에서 품목별 결제 취소 전송
+	$sCancelReasonCode = array_search($oVal->related_claim_code, $oSvorderClass->g_aNpayCancelReturnReason);
+	if( $sCancelReasonCode )
+	{
+		$aNpayCancelReason = Context::getLang('arr_npay_claim_cancel_return_reason');
+		$oVal->sClaimReason = $aNpayCancelReason[$sCancelReasonCode];
+	}
+	else
+		$oVal->sClaimReason = 'N/A';
+	break;
+
+2. 미구현된 반품 완료로 상태 변경 기능 추가
+./svcrm.amin.model.php::getCsLogByOrderSrl()에 아래의 코드 추가
+case svorder::ORDER_STATE_RETURNED:
+
+v 1.0.2
+23rd, Feb 2020
+1. npay 주문 리뷰 수집 기능 추가
+./queries/getModInstList.xml 추가
+./svcrm.amin.view.php::dispSvcrmAdminModInstList() 추가
+./svcrm.amin.view.php::dispSvcrmAdminInsertModInst() 추가
+./svcrm.amin.model.php::getModInstList() 추가
+./svcrm.amin.controller.php::procSvcrmAdminInsertModInst() 추가
+./svcrm.view.php::dispSvcrmIndex() 추가
+
+./tpl/_header.html에 아래의 코드 추가
+<li class="x_active"|cond="$act=='dispSvcrmAdminModInstList'" ><a href="{getUrl('','module',$module,'act','dispSvcrmAdminModInstList')}">{$lang->page_list}</a></li>
+
+v 1.0.3
+8th, Mar 2020
+1. npay 주문 리뷰 수집 기능 제거
+./svcrm.view.php::dispSvcrmIndex() 제거
+
+v 1.0.4
+16th, Mar 2020
+1. 인증 회원 목록 추출 시 이메일 주소를 포함함
+./svcrm.admin.controller.php::procSvcrmAdminCSVDownloadByMember()에서 아래의 코드를
+echo 'member_srl,user_id,auth_name,auth_birthdate,auth_gender,auth_nationality,auth_cell_no,auth_date';
+		
+// extra_vars의 컬럼 제목 설정
+$oMemberModel = getModel('member');
+$oMemberExtendFormList = $oMemberModel->getCombineJoinForm($memberInfo);
+
+foreach( $oMemberExtendFormList as $key => $val)
+	echo ','.$val->column_title;//.'<BR>';
+
+echo "\r\n";
+
+foreach( $output->data as $key => $val)
+{
+	echo $val->member_srl.','.$val->user_id.',;
+
+아래와 같이 변경
+echo 'member_srl,user_id,email_address,auth_name,auth_birthdate,auth_gender,auth_nationality,auth_cell_no,auth_date';
+		
+// extra_vars의 컬럼 제목 설정
+$oMemberModel = getModel('member');
+$oMemberExtendFormList = $oMemberModel->getCombineJoinForm($memberInfo);
+
+foreach( $oMemberExtendFormList as $key => $val)
+	echo ','.$val->column_title;//.'<BR>';
+
+echo "\r\n";
+
+foreach( $output->data as $key => $val)
+{
+	echo $val->member_srl.','.$val->user_id.','.$val->email_address.',';
+
+./queries/getAuthMemberList.xml에 아래의 코드 추가
+<column name="email_address" />
+
+v 1.0.5
+8th, Apr 2020
+1. 반품 요청 취소 기능 추가
+./svcrm.Log_trigger.php::_parseTranslateParam()에 아래의 코드 추가
+case svorder::ORDER_STATE_DELIVERED: // 반품 요청 후 반품 요청 취소 시
+	if( strlen($oCsParam->sDetailReason) ) 
+		$oTmp->sMemo = $oCsParam->sDetailReason;
+	break;
+
+v 1.0.6
+17th, Apr 2020
+1. svpromotion v1.0.0에 대응
+./svcrm.admin.view.php::dispSvcrmAdminRegistrationMgmt()에서 아래의 코드를
+$oSvpromotionAdminModel = &getAdminModel('svpromotion');
+$oCouponPromotionList = $oSvpromotionAdminModel->getCouponPromotionList();
+
+아래와 같이 변경
+$oSvpromotionModel = &getModel('svpromotion');
+$oCouponPromotionList = $oSvpromotionModel->getCouponPromotionList();
+
+v 1.0.7
+28th, Jun 2020
+1. 공개된 sendSlackMessage() 메소드 추가
+./svcrm.controller.php::_sendSlackMessage()를 _sendSlackMessageDocument()로 변경
+
+2. slack의 변경된 API 정책에 대응
+./svcrm.admin.controller.php::procSvcrmAdminUpdateInquiryInformMgmt()에 아래의 코드 추가
+$oArgs->crm_slack_web_hook_url = trim($oTempArgs->crm_slack_web_hook_url);
+
+./tpl/board_inform_mgmt.html에 아래의 코드 추가
+<div class="x_control-group">
+	<label class="x_control-label">{$lang->title_crm_slack_web_hook_url}</label>
+	<div class="x_controls">
+		<input type="text" size="5" maxlength="500" name="crm_slack_web_hook_url" value="{$config->crm_slack_web_hook_url}" />
+		<a href="#crm_slack_web_hook_url_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+		<p id="crm_slack_web_hook_url_help" class="x_help-block" hidden>{$lang->about_crm_slack_web_hook_url}</p>
+	</div>
+</div>
+
+./tpl/board_inform_mgmt.html에서 아래의 코드 제거
+<div class="x_control-group">
+	<label class="x_control-label">{$lang->title_crm_slack_api_token}</label>
+	<div class="x_controls">
+		<input type="text" size="5" maxlength="500" name="crm_slack_api_token" value="{$config->crm_slack_api_token}" />
+		<a href="#crm_slack_api_token_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+		<p id="crm_slack_api_token_help" class="x_help-block" hidden>{$lang->about_crm_slack_api_token}</p>
+	</div>
+</div>
+
+./slack.class.php에 SlackIncomingWebHook 클래스 추가
+
+./svcrm.controller.php::sendSlackMessage() 추가
+
+v 1.0.8
+13th, Jul 2020
+1. Slack Messagenger에 통지 시 새글과 댓글 구분 기능 추가
+./tpl/board_inform_mgmt.html에서 아래의 코드를
+<label class="x_inline" for="monitor_{$val->module_srl}"><input type="checkbox" name="monitor_board[]" id="monitor_board[]" value="{$val->module_srl}" checked="checked"|cond="$config->monitor_board[$val->module_srl]=='on'" /> {$val->mid}</label><BR>
+
+아래와 같이 변경
+<label class="x_inline" for="monitor_{$val->module_srl}"><input type="checkbox" name="monitor_board[]" id="monitor_board[]" value="{$val->module_srl}_doc" checked="checked"|cond="$config->monitor_board[$val->module_srl.'_doc']=='on'" /> {$val->mid} document</label>
+<label class="x_inline" for="monitor_{$val->module_srl}"><input type="checkbox" name="monitor_board[]" id="monitor_board[]" value="{$val->module_srl}_com" checked="checked"|cond="$config->monitor_board[$val->module_srl.'_com']=='on'" /> {$val->mid} comment</label><BR>
+
+./svcrm.controller.php::triggerInsertDocument()에서 아래의 코드를
+if( $key == $nModuleSrl )
+
+아래와 같이 변경
+if( $key == $nModuleSrl.'_doc' )
+
+./svcrm.controller.php::triggerInsertComment()에서 아래의 코드를
+if( $key == $nModuleSrl )
+
+아래와 같이 변경
+if( $key == $nModuleSrl.'_com' )
+
+v 1.0.9
+1st, Aug 2020
+1. 문의 게시판 닉네임에 관리자 사칭 방지 기능 추가
+
+./svcrm.class.php::checkUpdate()에 아래의 코드 추가
+if(!$oModuleModel->getTrigger('document.insertDocument', 'svcrm', 'controller', 'validateContentsBefore', 'before'))
+	return true;
+if(!$oModuleModel->getTrigger('comment.insertComment', 'svcrm', 'controller', 'validateContentsBefore', 'before'))
+	return true;
+
+./svcrm.class.php::moduleUpdate()에 아래의 코드 추가
+$oModuleController->insertTrigger('document.insertDocument', 'svcrm', 'controller', 'validateContentsBefore', 'before');
+$oModuleController->insertTrigger('comment.insertComment', 'svcrm', 'controller', 'validateContentsBefore', 'before');
+
+./queries/getMemberAdminNickNameList.xml 추가
+./svcrm.controller.php::validateContentsBefore() 추가
+
+v 1.1.0
+20th, Dec 2020
+1. php v7.4.13에 대응
+모든 new Object()를 new BaseObject()로 변경
+
+v 1.3.0
+26th, Jun 2021
+1. 댓글 새글 작성자 최종 세션 정보 보관 기능 추가
+./svcrm.Log_trigger.php::svcrmLogTrigger를 svcrmOrderCsLogTrigger로 변경
+
+./svcrm.Log_trigger.php::svcrmEngageLogTrigger 추가
+
+./tpl/default_setting.html에 아래의 코드 추가
+<section class="section">
+	<h1>방문자 새글 댓글 작성 시 세션 감지</h1>
+	<div class="x_control-group">
+		<label class="x_control-label">세션 기록 예외 member srl</label>
+		<div class="x_controls">
+			<input type="text" size="5" maxlength="200" name="ignore_member_srls" value="{$config->ignore_member_srls}" />
+			<a href="#ignore_member_srls_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="ignore_member_srls_help" class="x_help-block" hidden>,로 구분된 member_srl 번호를 입력하면 해당 회원의 활동은 기록하지 않습니다. 공란이면 모든 회원 활동 기록</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="visitor_document_log_activation">글 작성 시 세션 로그 사용</label>
+		<div class="x_controls" >
+			<label class="x_inline" for="visitor_document_log_activation">
+				<input type="radio" name="visitor_document_log_activation" id="visitor_document_log_activation" value="off" checked="checked"|cond="$config->visitor_document_log_activation=='' || $config->visitor_document_log_activation=='off'" />
+				{$lang->cmd_sms_off}
+				<input type="radio" name="visitor_document_log_activation" id="visitor_document_log_activation" value="on" checked="checked"|cond="$config->visitor_document_log_activation=='on'" />
+				{$lang->cmd_sms_on}
+			</label>
+			<a href="#visitor_document_log_activation_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="visitor_document_log_activation_help" class="x_help-block" hidden>방문자가 글 작성 시 최종 세션 정보를 기록하여 방문자의 행태 특성을 추적합니다.</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="visitor_comment_log_activation">댓글 작성 시 세션 로그 사용</label>
+		<div class="x_controls" >
+			<label class="x_inline" for="visitor_comment_log_activation">
+				<input type="radio" name="visitor_comment_log_activation" id="visitor_comment_log_activation" value="off" checked="checked"|cond="$config->visitor_comment_log_activation=='' || $config->visitor_comment_log_activation=='off'" />
+				{$lang->cmd_sms_off}
+				<input type="radio" name="visitor_comment_log_activation" id="visitor_comment_log_activation" value="on" checked="checked"|cond="$config->visitor_comment_log_activation=='on'" />
+				{$lang->cmd_sms_on}
+			</label>
+			<a href="#visitor_comment_log_activation_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="visitor_comment_log_activation_help" class="x_help-block" hidden>방문자가 댓글 작성 시 최종 세션 정보를 기록하여 방문자의 행태 특성을 추적합니다.</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label">댓글 작성 시 세션 정보 기록할 문서 srl</label>
+		<div class="x_controls">
+			<input type="text" size="5" maxlength="200" name="visitor_comment_log_doc_srls" value="{$config->visitor_comment_log_doc_srls}" />
+			<a href="#visitor_comment_log_doc_srls_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="visitor_comment_log_doc_srls_help" class="x_help-block" hidden>,로 구분된 doc_srl 번호를 입력하면 해당 문서의 댓글만 감시합니다. 공란이면 모든 새글 댓글 감시</p>
+		</div>
+	</div>
+</section>
+
+./svcrm.admin.controller.php::procSvcrmAdminInsertConfig()에 아래의 코드 추가
+$oArgs->ignore_member_srls = trim(Context::get('ignore_member_srls'));
+$oArgs->visitor_document_log_activation = trim(Context::get('visitor_document_log_activation'));
+$oArgs->visitor_comment_log_activation = trim(Context::get('visitor_comment_log_activation'));
+$oArgs->visitor_comment_log_doc_srls = trim(Context::get('visitor_comment_log_doc_srls'));
+
+./schemas/svcrm_engage_log.xml 추가
+./queries/insertEngageLog.xml 추가
+
+./svcrm.controller.php::svcrmController::triggerInsertDocument()에 아래의 코드 추가
+if( $oWriterInfo->is_admin != 'Y' && $config->visitor_document_log_activation == 'on')
+{
+	require_once(_XE_PATH_.'modules/svcrm/svcrm.log_trigger.php');
+	$oEnageLog = new svcrmEngageLogTrigger($obj, $config);
+	unset($oEnageLog);
+}
+
+./svcrm.controller.php::svcrmController::triggerInsertComment()에 아래의 코드 추가
+if( $oWriterInfo->is_admin != 'Y' && $oConfig->visitor_comment_log_activation == 'on')
+{
+	require_once(_XE_PATH_.'modules/svcrm/svcrm.log_trigger.php');
+	$oEnageLog = new svcrmEngageLogTrigger($obj, $oConfig);
+	unset($oEnageLog);		
+}
+
+----------- ToDo --------------------
+문자 메세지 발송 내역 별도 보관
+./svcrm.permission.php 내용을 module_config로 이동

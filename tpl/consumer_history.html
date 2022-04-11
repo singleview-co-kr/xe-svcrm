@@ -1,0 +1,150 @@
+<include target="_header.html" />
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+<section class="section">
+	<h2>{$lang->title_member_info}</h2>
+	<table class="x_table x_table-striped x_table-hover">
+		<tr>
+			<th style="width:120px">{$lang->signup_date}</th>
+			<td>{zdate($memberInfo['regdate'],"Y-m-d")}</td>
+			<th>{$lang->last_login}</th>
+			<td>{zdate($memberInfo['last_login'],"Y-m-d H:i:s")}</td>
+		</tr>
+	{@
+	$nIdx = 0;
+	}
+	<block loop="$displayDatas => $item">
+	{@
+	if( $nIdx%2==0 )
+		echo '<tr>';
+	}
+			<th scope="row" ><em style="color:red" cond="$item->required || $item->mustRequired">*</em> {$item->title}</th>
+			<td class="text">{$item->value}</td>
+	{@
+	$nIdx++;
+	if( $nIdx%2==0 )
+		echo '</tr>';
+	}
+	</block>
+		<tr>
+			<th scope="row">{$lang->allow_mailing}</th>
+			<td class="text"><!--@if($memberInfo['allow_mailing'] == 'Y')-->{$lang->cmd_yes}<!--@else-->{$lang->cmd_no}<!--@end--></td>
+			<th scope="row">{$lang->allow_message}</th>
+			<td class="text">{$lang->allow_message_type[$memberInfo['allow_message']]}</td>
+		</tr>
+		<tr>
+			<th scope="row">{$lang->member_group}</th>
+			<td class="text">{implode(', ', $memberInfo['group_list'])}</td>
+		</tr>
+		<tr cond="$memberInfo['is_admin'] == 'Y'">
+			<th scope="row">{$lang->is_admin}</th>
+			<td class="text">{$lang->cmd_yes}</td>
+		</tr>
+		<tr cond="$memberInfo['description']">
+			<th scope="row"><div>{$lang->description}</div></th>
+			<td>{$memberInfo['description']}&nbsp;</td>
+		</tr>
+	{@
+	$nIdx = 0;
+	}
+	<block loop="$auth_form_list => $key,$val">
+	{@
+	if( $nIdx%2==0 )
+		echo '<tr>';
+	}
+			<th scope="row" >{$key}</th>
+			<td class="text">{$val}</td>
+	{@
+	$nIdx++;
+	if( $nIdx%2==0 )
+		echo '</tr>';
+	}
+	</block>
+		<style scoped>
+		.x_table th{text-align:right}
+		</style>
+	</table>
+
+	<h2>{$lang->title_purchase_details}</h2>
+	<table class="x_table">
+		<thead>
+			<tr>
+				<th>주문번호</th>
+				<th>주문일시</th>
+				<th>상품</th>
+				<th>{$lang->quantity}</th>
+				<th>{$lang->amount}</th>
+				<th>{$lang->order_status}</th>
+				<th>확장</th>
+			</tr>
+		</thead>
+		{@$total_price=0}
+		<tbody>
+			<tr loop="$order_list=>$key,$order_info">
+				<td><A HREF='/index.php?module=svshopmaster&act=dispSvorderAdminOrderDetail&order_srl={$order_info->order_srl}'>{$order_info->order_srl}</A></td>
+				<td>{zdate($order_info->regdate,'Y-m-d')}</td>
+				<td>{$order_info->title}</td>
+				<td>{$order_info->item_count}</td>
+				<td>{number_format($order_info->total_discounted_price)}</td>
+				<td>{$order_status[$order_info->order_status]}</td>
+				<td>
+					{@$extra_vars = unserialize($order_info->extra_vars)}
+					<block loop="$extra_vars=>$extra_key,$extra_val">
+						<span cond="is_array($extra_val)">{implode(' ', $extra_val)}</span>
+						<span cond="!is_array($extra_val)">{$extra_val}</span>
+					</block>
+				</td>
+				{@$total_price+=$order_info->total_discounted_price}
+			</tr>
+			<tr cond="!count($order_list)">
+				<td colspan="7">{$lang->msg_no_orders}</td>
+			</tr>
+		</tbody>
+	</table>
+	<div>Total : {number_format($total_price)}</div>
+</section>
+<section class="section">
+<form action="./" method="post" class="x_form-horizontal">
+<input name="act" type="hidden" value="procSvcrmAdminSendSmsToMember" />
+<input name="module" type="hidden" value="{$module}" />
+<input name="member_srl" type="hidden" value="{$member_srl}" />
+	<h2>{$lang->title_sms_history}</h2>
+	<div class="x_control-group">
+		<label class="x_control-label" for="sms_order_status_wait_for_deposit">{$lang->sms_to_send_now}</label>
+		<div class="x_controls" >
+			<textarea name="something_to_say"></textarea>
+			<a href="#sms_order_status_wait_for_deposit_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="sms_order_status_wait_for_deposit_help" class="x_help-block" hidden>{$lang->about_sms_order_status_wait_for_deposit}</p>
+		</div>
+	</div>
+	<div class="x_clearfix btnArea">
+		<button type="submit" class="x_btn x_btn-primary">{$lang->cmd_send_sms}</button>
+	</div>
+</form>
+
+<form action="" method="post">
+	<table id="memberList" class="x_table x_table-striped x_table-hover">
+		<thead>
+			<tr>
+				<th scope="col" class="nowr">{$lang->medium_type}</th>
+				<th scope="col" class="nowr">{$lang->sender}</th>
+				<th scope="col" class="nowr">{$lang->contents}</th>
+				<th scope="col" class="nowr">{$lang->date}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr loop="$comm_log=>$no,$log_info">
+				<td class="nowr">{$log_info->medium_type}</td>
+				<td class="nowr">{$log_info->sender_id}</td>
+				<td class="nowr">{$log_info->content}</td>
+				<td class="nowr">{zdate($log_info->regdate)}</td>
+			</tr>
+			<tr cond="$total_count==0">
+				<td>{$lang->msg_no_result}</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+</section>
+게시글 내역

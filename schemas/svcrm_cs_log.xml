@@ -1,0 +1,22 @@
+<table name="svcrm_cs_log">
+	<column name="cs_log_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" auto_increment="auto_increment" />
+	<!-- 상태 변경 요청 허가 여부 -->
+	<column name="is_allowed" type="char" size="1" default="0" notnull="notnull" index="idx_is_allowed" />
+	<column name="order_srl" type="number" size="11" notnull="notnull" index="idx_order_srl" />
+	<column name="cart_srl" type="number" size="11" index="idx_cart_srl" />
+	<column name="item_srl" type="number" size="11" index="idx_item_srl" />
+	<column name="order_status_source" type="char" size="1" default="0" notnull="notnull" />
+	<column name="order_status_dest" type="char" size="1" default="0" notnull="notnull" index="idx_order_status_dest" />
+	<column name="buyer_member_srl" type="number" size="11" notnull="notnull" index="idx_buyer_member_srl" />
+	<column name="admin_member_srl" type="number" size="11" notnull="notnull" />
+	<!-- order_status_dest와 연관된 클레임 코드 값 -->
+	<column name="related_claim_code" type="varchar" size="5" />
+	<!-- +는 판매자의 채권 -는 판매자의 채무  -->
+	<column name="amount" type="number" size="11" />
+	<column name="amount_type" type="char" size="1" />
+	<column name="memo" type="text" />
+	<!-- caller class:function:line -->
+	<column name="caller_info" type="varchar" size="100" notnull="notnull" />
+	<column name="duedate" type="date" />
+	<column name="regdate" type="date" notnull="notnull" />
+</table>

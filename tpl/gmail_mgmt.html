@@ -1,0 +1,87 @@
+<include target="_header.html" />
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+<form action="./" method="post" class="x_form-horizontal">
+<input name="act" type="hidden" value="procSvcrmAdminUpdateGmailMgmt" />
+<input name="module" type="hidden" value="{$module}" />
+<section class="section">
+	<h1>
+		{$lang->title_gmail_mgmt}
+		<a href="#aboutGmailMgmt" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+	</h1>
+	<p id="aboutGmailMgmt" class="x_alert x_alert-info-block" hidden>{$lang->about_gmail_mgmt}</p>
+	<div class="x_control-group">
+		<label class="x_control-label" for="gmail_activation">{$lang->gmail_activation}</label>
+		<div class="x_controls" >
+			<label class="x_inline" for="gmail_activation">
+				<input type="radio" name="gmail_activation" id="gmail_activation" value="off" checked="checked"|cond="$config->gmail_activation=='' || $config->gmail_activation=='off'" />
+				{$lang->cmd_sms_off}
+				<input type="radio" name="gmail_activation" id="gmail_activation" value="on" checked="checked"|cond="$config->gmail_activation=='on'" />
+				{$lang->cmd_sms_on}
+			</label>
+			<a href="#gmail_activation_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="gmail_activation_help" class="x_help-block" hidden>{$lang->about_gmail_activation_help}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="gmail_account">{$lang->gmail_account}</label>
+		<div class="x_controls">
+			<input type="text" size="5" name="gmail_account" value="{$config->gmail_account}" />
+			<a href="#gmail_account_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="gmail_account_help" class="x_help-block" hidden>{$lang->about_gmail_account_help}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="gmail_passwd">{$lang->gmail_passwd}</label>
+		<div class="x_controls">
+			<input type="text" size="5" name="gmail_passwd" value="{$config->gmail_passwd}" />
+			<a href="#gmail_passwd_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="gmail_passwd_help" class="x_help-block" hidden>{$lang->about_gmail_passwd_help}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="gmail_sender_name">{$lang->gmail_sender_name}</label>
+		<div class="x_controls">
+			<input type="text" size="5" name="gmail_sender_name" value="{$config->gmail_sender_name}" />
+			<a href="#gmail_sender_name_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="gmail_sender_name_help" class="x_help-block" hidden>{$lang->about_gmail_sender_name_help}</p>
+		</div>
+	</div>
+	<div class="x_control-group">
+		<label class="x_control-label" for="gmail_common_footer">{$lang->gmail_common_footer}</label>
+		<div class="x_controls" >
+			<textarea name="gmail_common_footer">{$config->gmail_common_footer}</textarea>
+			<a href="#gmail_common_footer_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p id="gmail_common_footer_help" class="x_help-block" hidden>{$lang->about_gmail_common_footer}</p>
+		</div>
+	</div>
+</section>
+<div class="btnArea">
+	<button ID='btnSendTest' NAME='btnSendTest' type="button" class="x_btn x_btn-primary" onClick="javascript:sendGmailTest(); return false;">{$lang->cmd_send_test}</button>&nbsp;&nbsp
+	<button type="submit" class="x_btn x_btn-primary">{$lang->cmd_submit}</button>
+</div>
+</form>
+
+<script>
+function sendGmailTest()
+{
+	// dd@dd.com;cc@cc.com
+	var sTestReceiverAddr = prompt("테스트로 메일을 전송할 주소를 적어주세요", "여러 메일은 ;로 구분하세요.");
+	if( sTestReceiverAddr == null )
+		return;
+	else if( sTestReceiverAddr == '' )
+	{
+		alert( '수기 주문 전송 사유를 입력해 주세요.' );
+		return;
+	}
+
+	var params = new Array();
+	//params['order_srl'] = nOrderSrl;
+	params['test_receiver_addr'] = sTestReceiverAddr;
+	exec_xml('svcrm', 'procSvcrmAdminTestSendGmail', params, function(ret_obj){
+		alert(ret_obj['message']);
+		//jQuery('#btnTransmitExtl').attr('disabled','disabled');
+	});
+}
+</script>

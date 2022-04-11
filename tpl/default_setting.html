@@ -1,0 +1,76 @@
+<include target="_header.html" />
+
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+<form ruleset="updatePage" action="./" method="post" enctype="multipart/form-data" class="x_form-horizontal">
+<input type="hidden" name="module" value="{$module}" />
+<input type="hidden" name="act" value="procSvcrmAdminInsertConfig" />
+	<section class="section">
+		<h1>{$lang->cmd_basic_setting}</h1>
+		<div class="x_control-group">
+			<label class="x_control-label">발신 대행사 인증받은 SMS 발신번호</label>
+			<div class="x_controls">
+				<input type="text" size="5" name="sender_no" value="{$config->sender_no}" />
+				<a href="#sender_no_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="sender_no_help" class="x_help-block" hidden>{$lang->about_sender_no}</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label">SMS쿠폰 자릿수</label>
+			<div class="x_controls">
+				<input type="text" size="5" maxlength="20" name="coupon_digit_number" value="{$config->coupon_digit_number}" />
+				<a href="#coupon_digit_number_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+            	<p id="coupon_digit_number_help" class="x_help-block" hidden>5로 설정하면 다섯자리의 숫자값이 인증코드로 발송됩니다.</p>
+			</div>
+		</div>
+	</section>
+	<section class="section">
+		<h1>방문자 새글 댓글 작성 시 세션 감지</h1>
+		<div class="x_control-group">
+			<label class="x_control-label">세션 기록 예외 member srl</label>
+			<div class="x_controls">
+				<input type="text" size="5" maxlength="200" name="ignore_member_srls" value="{$config->ignore_member_srls}" />
+				<a href="#ignore_member_srls_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+            	<p id="ignore_member_srls_help" class="x_help-block" hidden>,로 구분된 member_srl 번호를 입력하면 해당 회원의 활동은 기록하지 않습니다. 공란이면 모든 회원 활동 기록</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="visitor_document_log_activation">글 작성 시 세션 로그 사용</label>
+			<div class="x_controls" >
+				<label class="x_inline" for="visitor_document_log_activation">
+					<input type="radio" name="visitor_document_log_activation" id="visitor_document_log_activation" value="off" checked="checked"|cond="$config->visitor_document_log_activation=='' || $config->visitor_document_log_activation=='off'" />
+					{$lang->cmd_sms_off}
+					<input type="radio" name="visitor_document_log_activation" id="visitor_document_log_activation" value="on" checked="checked"|cond="$config->visitor_document_log_activation=='on'" />
+					{$lang->cmd_sms_on}
+				</label>
+				<a href="#visitor_document_log_activation_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="visitor_document_log_activation_help" class="x_help-block" hidden>방문자가 글 작성 시 최종 세션 정보를 기록하여 방문자의 행태 특성을 추적합니다.</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label" for="visitor_comment_log_activation">댓글 작성 시 세션 로그 사용</label>
+			<div class="x_controls" >
+				<label class="x_inline" for="visitor_comment_log_activation">
+					<input type="radio" name="visitor_comment_log_activation" id="visitor_comment_log_activation" value="off" checked="checked"|cond="$config->visitor_comment_log_activation=='' || $config->visitor_comment_log_activation=='off'" />
+					{$lang->cmd_sms_off}
+					<input type="radio" name="visitor_comment_log_activation" id="visitor_comment_log_activation" value="on" checked="checked"|cond="$config->visitor_comment_log_activation=='on'" />
+					{$lang->cmd_sms_on}
+				</label>
+				<a href="#visitor_comment_log_activation_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="visitor_comment_log_activation_help" class="x_help-block" hidden>방문자가 댓글 작성 시 최종 세션 정보를 기록하여 방문자의 행태 특성을 추적합니다.</p>
+			</div>
+		</div>
+		<div class="x_control-group">
+			<label class="x_control-label">댓글 작성 시 세션 정보 기록할 문서 srl</label>
+			<div class="x_controls">
+				<input type="text" size="5" maxlength="200" name="visitor_comment_log_doc_srls" value="{$config->visitor_comment_log_doc_srls}" />
+				<a href="#visitor_comment_log_doc_srls_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+            	<p id="visitor_comment_log_doc_srls_help" class="x_help-block" hidden>,로 구분된 doc_srl 번호를 입력하면 해당 문서의 댓글만 감시합니다. 공란이면 모든 새글 댓글 감시</p>
+			</div>
+		</div>
+	</section>
+<div class="x_clearfix btnArea">
+	<button type="submit" class="x_btn x_btn-primary">{$lang->cmd_submit}</button>
+</div>
+</form>
