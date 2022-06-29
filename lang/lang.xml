@@ -241,6 +241,9 @@
 	<item name="msg_error_svorder_not_exsited">
 		<value xml:lang="ko"><![CDATA[svorder 모듈을 먼저 설치해 주세요.]]></value>
 	</item>
+	<item name="msg_error_svpg_not_exsited">
+		<value xml:lang="ko"><![CDATA[svpg 모듈을 먼저 설치해 주세요.]]></value>
+	</item>
 	<item name="msg_error_svpromotion_not_exsited">
 		<value xml:lang="ko"><![CDATA[svpromotion 모듈을 먼저 설치해 주세요.]]></value>
 	</item>

@@ -468,12 +468,14 @@ class svcrmAdminController extends svcrm
 		$sGmailSenderName = trim(Context::get('gmail_sender_name'));
 		$sGmailCommonFooter = trim(Context::get('gmail_common_footer'));
 		$sGmailCommonFooter = preg_replace(array('/<(\?|\%)\=?(php)?/', '/(\%|\?)>/'), array('',''), $sGmailCommonFooter);
+		$oArgs = new stdClass();
 		$oArgs->gmail_activation = $sGmailActivation;
 		$oArgs->gmail_account = $sGmailAccount;
 		$oArgs->gmail_passwd = $sGmailPasswd;
 		$oArgs->gmail_sender_name = $sGmailSenderName;
 		$oArgs->gmail_common_footer = $sGmailCommonFooter;
 		$output = $this->_saveModuleConfig($oArgs);
+		unset($oArgs);
 		if(!$output->toBool())
 			$this->setMessage( 'error_occured' );
 		else

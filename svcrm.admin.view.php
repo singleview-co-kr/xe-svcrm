@@ -90,6 +90,9 @@ class svcrmAdminView extends svcrm
  **/
 	public function dispSvcrmAdminInsertModInst() 
 	{
+		if(!getClass('svpg'))
+			return new BaseObject(-1, 'msg_error_svpg_not_exsited');
+
 		// 스킨 목록을 구해옴
 		$oModuleModel = &getModel('module');
 		$skin_list = $oModuleModel->getSkins($this->module_path);
