@@ -2,8 +2,8 @@
 <module version="0.2">
     <title xml:lang="ko">싱글뷰 고객관계관리</title>
     <description xml:lang="ko">고객 관계 관리의 목표를 설정하고 이를 수행합니다.</description>
-   <version>1.4.0</version>
-    <date>2022-02-18</date>
+   <version>1.4.1</version>
+    <date>2022-06-29</date>
     <category>service</category>
     <author email_address="w9721066@gmail.com" link="http://www.singleview.co.kr/">
         <name xml:lang="ko">singleview.co.kr</name>

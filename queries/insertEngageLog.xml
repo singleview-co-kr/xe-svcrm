@@ -10,6 +10,7 @@
 		<column name="elapsed_sec_last_intreact" var="nElapsedSecLastIntreact" />
 		<column name="val" var="sVal" />
 		<column name="cur_mid" var="sCurMid" />
+		<column name="ua" var="sUa" />
 		<column name="regdate" var="regdate" default="curdate()" />
 	</columns>
 </query>

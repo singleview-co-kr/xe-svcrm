@@ -7,5 +7,6 @@
     <column name="elapsed_sec_last_intreact" type="number" size="11" notnull="notnull" />
     <column name="val" type="bigtext" />
     <column name="cur_mid" type="varchar" size="128" />
+	<column name="ua" type="char" size="1" default="-" notnull="notnull" />
     <column name="regdate" type="date" notnull="notnull" />
 </table>

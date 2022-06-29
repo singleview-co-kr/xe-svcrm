@@ -52,6 +52,7 @@ class svcrmEngageLogTrigger
 			$oArgs->nElapsedSecLastIntreact = $nCurTimestamp - $nLastTimestamp; // duration sec
 			$oArgs->sVal = $oSessionRst->data->val;
 			$oArgs->sCurMid = $oSessionRst->data->cur_mid;
+			$oArgs->sUa = $_COOKIE['mobile'] == 'false' ? 'P' : 'M';
 			$oInesrtRst = executeQuery('svcrm.insertEngageLog', $oArgs);
 			unset($oArgs);
 			unset($oInesrtRst);
